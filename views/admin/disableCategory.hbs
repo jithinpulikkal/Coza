@@ -1,0 +1,101 @@
+
+
+
+<div class="head-img d-flex align-items-center justify-content-center">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Categories</h1>
+</div>
+<div class="container mt-5">
+  <p class="text-secondary text-center ">Do you want to merge category {{category.category}} with another category? </p>
+  
+<div>
+  <p>
+    
+  </p>
+</div>
+
+{{#if category}}
+<form action="/admin/edit-category/{{category._id}}" method="post">
+       <div class="d-flex">
+         {{!-- <input type="text" name="category" style="width: 90%;" placeholder="" value="{{category.category}}">
+         <input style="border: none;" class="dlt-btn bg-primary ms-1 " type="submit" value="Edit Category"> --}}
+       </div>
+       <p class="text-danger text-center">{{err}}</p>
+    </form>
+{{else}}
+    <form action="/admin/add-category" method="post">
+       <div class="d-flex">
+         {{!-- <input type="text" name="category" style="width: 90%;" placeholder="category" value="{{data.category}}">
+         <input style="border: none;" class="dlt-btn bg-success ms-1 " type="submit" value="Add Category"> --}}
+       </div>
+       <p class="text-danger text-center">{{err}}</p>
+    </form>
+{{/if}}
+
+
+<form action="/admin/category/" method="post">
+    
+    <table class="table table-borderless table-hover text-center">
+  <thead>
+   
+    <tr>
+      <th scope="col" class="h5 text-secondary">Categories</th>
+      <th scope="col" class="h5 text-secondary">Select</th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+
+    
+
+    {{#each categories}}
+    <tr {{#if (eq status false)}} class="bg-secondary bg-gradient text-white" {{/if}}>
+      <th scope="row">{{category}}</th>
+
+      {{#if (eq status false)}}{{else}}
+
+      <td>
+        
+        <input type="radio" name="selection" value="{{category}}">
+        
+      </td>
+
+      {{/if}}
+
+    </tr>
+
+    {{/each}}
+    
+
+  </tbody>
+
+
+</table>
+
+      <a href="/admin/disable-category/{{category._id}}" class="text-white bg-primary float-end mx-2 p-1" type="submit"  onclick="submitForm('{{category._id}}'); return false;">Update</a>
+
+      <a href="/admin/disable-category/{{category._id}}" class="text-white bg-danger float-end pb-1 ps-1 pt-1 pe-1">Disable</a></td>
+
+</form>
+
+</div>
+
+
+<script>
+    function submitForm(id) {
+
+      var selectedValue = document.querySelector('input[name="selection"]:checked').value;
+
+      alert("Selected value: " + selectedValue);
+
+      $.post("/admin/categories",{
+        category: selectedValue,
+        id:id
+      },function(response){
+        if(response.status){
+          location.href="/admin/categories"
+        }
+      })
+
+    } 
+</script>

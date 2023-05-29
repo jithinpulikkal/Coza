@@ -1,0 +1,109 @@
+<div class="head-img d-flex align-items-center justify-content-center mb-4">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Orders</h1>
+</div>
+<div class="container d-none d-md-block">
+  <div class="float-end mb-4">
+    <select name="" oninput="orderFilter()" id="order-filter" class="fs-5" style="border: none;">
+      <option value="">All</option>
+      <option value="userCancelPending" {{#if (eq opt 'userCancelPending')}} selected{{/if}}>Pending Cancel</option>
+      <option value="adminAcceptCancel" {{#if (eq opt 'adminAcceptCancel')}} selected{{/if}}>Cancelled</option>
+      <option value="orderPlaced" {{#if (eq opt 'orderPlaced')}} selected{{/if}}>Order Placed</option>
+      <option value="shipped" {{#if (eq opt 'shipped')}} selected{{/if}}>Shipped</option>
+      <option value="outForDelivery" {{#if (eq opt 'outForDelivery')}} selected{{/if}}>Out For delivery</option>
+      <option value="Delivered" {{#if (eq opt 'Delivered')}} selected{{/if}}>Delivered</option>
+      <option value="returnPending" {{#if (eq opt 'returnPending')}} selected{{/if}}>Return Request</option>
+      <option value="returnConfirmed" {{#if (eq opt 'returnConfirmed')}} selected{{/if}}>Returned Orders</option>
+      
+      
+    </select>
+  </div>
+    <table class="table table-hover table-borderless text-center">
+  <thead>
+    <tr  style="font-size: larger;">
+      <th scope="col">Date</th>
+      <th scope="col">Username</th>
+      <th scope="col">Items</th>
+      <th scope="col">Total</th>
+      <th>Discount Total</th>
+      <th>Order Status</th>
+      <th>Payment</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr {{#if (eq orderStatus "userCancelPending")}} class="bg-warning" {{/if}} {{#if (eq orderStatus "returnConfirmed")}} class="text-danger" {{/if}} {{#if (eq orderStatus "adminAcceptCancel")}} class="bg-danger text-light" {{/if}}  {{#if (eq orderStatus "returnPending")}} class="text-warning " {{/if}}  onclick="window.location.href='/admin/orderdetails/{{_id}}'">
+
+      <td>{{Address.date}}</td>
+      <td>{{username}}</td>
+      <td>{{products.length}}</td>
+      <td>{{subTotal}}</td>
+      <td>{{discTotal}}</td>
+      <td >{{orderStatus}}</td>
+      <td>{{Address.payment}}</td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>
+</div>
+
+<div class="container d-block d-md-none">
+    <table class="table table-hover">
+  <thead>
+    <tr>
+
+      <th scope="col">Username</th>
+      <th scope="col">Items</th>
+      <th> Total</th>
+      <th>Order Status</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr {{#if (eq orderStatus "userCancelPending")}} class="bg-warning" {{/if}} {{#if (eq orderStatus "adminAcceptCancel")}} class="bg-danger text-light" {{/if}} onclick="window.location.href='/admin/orderdetails/{{_id}}'">
+
+      <td>{{username}}</td>
+      <td>{{products.length}}</td>
+      <td>{{discTotal}}</td>
+      <td >{{orderStatus}}</td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>
+</div>
+
+<div class="container mt-5">
+
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination"> 
+                
+                {{#each pageArr}}
+                
+                <li {{#if (eq ../page [])}}class="page-item active"{{/if}}><a class="page-link" href="/admin/paginationn/{{[]}}">{{[]}}</a></li>
+                
+                {{/each}}
+                
+                
+ 
+              </ul>
+            </nav>  
+        </div>
+</div>
+
+<script>
+  function orderFilter(){
+    let filter=document.getElementById('order-filter').value
+    console.log(filter)
+    $.ajax({
+      url:'/admin/order-filter',
+      method:"POST",
+      data:{filter:filter},
+      success:(response)=>{
+        location.reload()
+      }
+    })
+  }
+</script>

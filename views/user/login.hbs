@@ -1,0 +1,96 @@
+
+<link rel="stylesheet" href="/stylesheets/login.css">
+<div>
+    {{!-- <div class="wrapper">
+        <div class="container main">
+            <div class="row">
+                <div class="col-md-6 side-image">
+
+
+                    <div class="text">
+                        <p class="d-none d-md-block">"Style is a way to say who you are without having to speak." <i> — Rachel Zoe</i></p>
+                    </div>
+                </div>
+                <div class="col-md-6 right">
+                    <div class="input-box">
+                        <header>Login</header>
+                        <form action="/login" method="post" class="p-3">
+                        <div class="input-field">
+                            <input type="text" class="input" name="email" id="email" required autocomplete="off">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" class="input" name="password" id="password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <p class="text-danger">{{Err}}</p>
+                        <div class="input-field">
+                            <input type="submit" class="submit" value="Sign In ">
+
+                        </div>
+                        </form>
+                        
+                        <div class="signin">
+                            <a href="/otp-login" class="mb-2 text-center pe-3">OTP login</a> |
+                            <a href="/forgot-password" class="ps-3">Forgot password?</a><br>
+                            <span>Don't have an account? <a href="/signup">Sign up here</a></span><br>
+                            <a href="/" class="mb-2 text-center">Home</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="/images/img-01.png" alt="IMG">
+				</div>
+
+				<form action="/login" method="post" class="login100-form validate-form">	
+					<span class="login100-form-title">
+						Login
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is required">
+
+						<input class="input100" type="email"  name="email" placeholder="Email" id="email" required autocomplete="off">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+
+						<input class="input100" type="password" name="password" placeholder="Password" id="password" required>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<p class="text-danger text-center">{{Err}}</p>
+
+
+                            <button class="container-login100-form-btn">
+                                <input type="submit" value="Sign In" class="login100-form-btn"
+                                    id="floatingPassword" placeholder="Password">
+                            </button>
+
+                            <div class="signin text-center pt-2">
+                            <a href="/otp-login" class="mb-2 text-center pe-3">OTP login</a> |
+                            <a href="/forgot-password" class="ps-3">Forgot password?</a><br>
+                            <span>Don't have an account? <a href="/signup">Sign up here</a></span><br>
+                            <a href="/" class="mb-2 text-center">Home</a>
+
+                        </div>
+				</form>
+                
+			</div>
+		</div>
+	</div>
+</div>

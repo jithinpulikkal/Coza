@@ -1,0 +1,60 @@
+<br>
+<div class="head-img d-flex align-items-center justify-content-center">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Wallet</h1>
+</div>
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Transactions</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                {{!-- <th>Transaction ID</th>
+                <th>User ID</th> --}}
+                <th class="text-center">Type</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each wallets}}
+              {{#each []}}
+              <tr>
+                {{!-- <td>{{this._id}}</td>
+                <td>{{this.userId}}</td> --}}
+                <td class="text-center">{{this.transactionType}}</td>
+                <td class="text-center">{{this.amount}}</td>
+                <td class="text-center">{{this.description}}</td>
+                <td class="text-center">{{this.timestamp}}</td>
+              </tr>
+              {{/each}}
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{{!-- <div class="container mt-5">
+
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                
+                {{#each pageArr}}
+                
+                <li  {{#if (eq ../page [])}} class="page-item active" {{else}} class="page-item" {{/if}} ><a class="page-link" href="/paginationn/{{[]}}">{{[]}}</a></li>
+                {{/each}}
+                
+            </ul>
+            </nav>
+        </div>
+</div> --}}

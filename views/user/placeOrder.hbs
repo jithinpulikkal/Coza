@@ -1,0 +1,432 @@
+<div class="head-img d-flex" style="align-items: center; justify-content: center;">
+    <h2 class="text-center text-white ">CHECKOUT</h2>
+</div>
+
+
+<div class="container mt-2 mb-4 pb-4 ">
+    <div class="mx-md-0 ">
+        <form name="myForm" id="checkOut" onsubmit="return placeOrder()" action="" class="">
+        <div class="row mt-5 mx-auto">
+            <div class="col-md-8">
+                <h4 class="pb-4">Billing Address</h4>
+                <label class="text-start" for="">First name</label><br>
+                <input class="plc-inp" type="text" name="fname" id="name" value="{{address.fname}}"><br>
+                <label for="">Last name</label><br>
+                <input class="plc-inp" type="text" name="lname" id="name" value="{{address.lname}}"><br>
+                <label for="">State</label><br>
+                <select class="plc-inp" name="state" id="" style="height: 30px;">
+                     <option value="">Select State</option>
+                    <option 
+                    {{#if (eq address.state 'Kerala' )}} 
+                    selected 
+                    {{/if}} 
+                    {{#if (eq address.state 'kerala' )}} 
+                    selected 
+                    {{/if}}value="Kerala">Kerala
+                    </option>
+                   
+                </select><br>
+                <label for="">Address</label><br>
+                <textarea class="plc-inp" name="address" id="" cols="30" rows="5">{{address.address}}</textarea><br>
+                <label for="">Pin code</label><br>
+                <input class="plc-inp" type="number" name="pincode" id="" value="{{address.pincode}}"><br>
+                <label for="">Town/City</label><br>
+                <input class="plc-inp" type="text" name="town" id="" value="{{address.town}}"><br>
+                <label for="">Phone Number</label><br>
+                <input class="plc-inp" type="text" name="phone" id="" value="{{address.phone}}"><br>
+                <label for="">Email Address</label><br>
+                <input class="plc-inp" type="text" name="email" id="" value="{{address.email}}"><br>
+
+                <input type="checkbox" class="mt-3" name="save" id="" style=" width:20px ;height:20px" value=true><span
+                    class="ps-2 mb-2" for="">Save this address</span>
+                <br>
+                {{#if userData.address}}
+                <a href="/place-order/select-address/{{user._id}}">Select from saved address</a>
+                {{/if}}
+            </div>
+            <div class="col-md-4 mt-3">
+                <div class="border  mb-3">
+                    <h5 class="ms-3 mt-3 pb-2">Coupon</h5>
+                    <div class="d-flex mt-2 justify-content-center pb-2">
+                        <input type="text" class=" plc-inp" style="" id="coup" value="{{appliedCoupon.name}}">
+                        {{#if appliedCoupon.name}}
+                        <a href="/remove-coupon" class="pb-2 px-2 text-white" style="height: 33px; border: none;background-color: black;">Remove</a>
+                        {{else}}
+                        <a onclick="couponApply()"  class="pb-2 px-2 text-white" style="height: 33px; border: none;background-color: black;">Apply</a>
+                        {{/if}}
+                    </div>
+                    <p class="text-danger ms-4" id="coupErr">{{coupValidErr}}</p>
+                    <a class="ms-3 pb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Available Coupons</a>
+                    
+                </div>
+                <div class="border" style="width: 100%;">
+                    <div class="pt-4 ps-4 pe-2">
+                        <h4>Your Order</h4>
+                        <p class="text-secondary ">The Details</p>
+                        <hr>
+                        <table class="table ">
+                            <tbody>
+                                
+                                {{#each cartProducts}} 
+                                <tr>
+                                    <td>{{product.product}}</td>
+                                    <td>₹{{product.price}} </td>
+                                </tr>
+                                {{/each}}
+                                <tr>
+                                    <td>SubTotal</td>
+                                    <td>₹{{totalPrice.total}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td>₹{{totalPrice.saving}}</td>
+                                </tr>
+                                {{#if appliedCoupon.name}}
+                                <tr>
+                                    <td>Coupon</td>
+                                    <td class="text-success">{{appliedCoupon.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Coupon Discount</td>
+                                    <td >₹{{appliedCoupon.coupSave}}</td>
+                                </tr>
+                                {{/if}}
+                                
+                                <tr>
+                                    <td>Total</td>
+                                    <td>₹{{totalPrice.disTotal}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        {{#if (gt totalPrice.disTotal userData.wallet)}} 
+                        
+                        <div class="py-2 d-flex align-items-center j">
+                            <label for="">Use Wallet (Balance : ₹{{userData.wallet}})</label> <input class="ms-3" id="usewallet" style=" width: 25px; height: 25px;" onclick="useWallet()" type="checkbox" name="" id="" {{#if walletAmt}} checked {{/if}}>
+                        </div>
+                        
+                        {{/if}}
+                        
+                        
+                        <div class="d-flex" style="align-items: center;">
+                            <input type="radio" class="payment pt-3 me-2" name="payment" value="cash"
+                                style="width: 20px; height: 20px;" checked> Cash On Delivery
+                        </div>
+                        <div class="d-flex mt-2 mb-3" style="align-items: center;">
+                            <input type="radio" class="payment pt-3 me-2" name="payment" value="online"
+                                style="width: 20px; height: 20px;"> Online Payment
+                        </div>
+                        <div class="d-flex mt-2 mb-3" style="align-items: center;">
+
+                            <input type="radio" class="payment pt-3 me-2" name="payment" value="wallet" {{#if (gt totalPrice.disTotal userData.wallet)}} disabled{{/if}}
+                                style="width: 20px; height: 20px;"> Wallet payment   {{#if (gt totalPrice.disTotal userData.wallet)}} <span class="text-danger ps-2"> (Insufficiant Balance)</span> {{else}} (Balance : ₹{{userData.wallet}}) {{/if}}
+                        </div>
+                        <p class="text-danger" id="placeOrderErr">{{Err}}</p>
+                        <div class="d-flex" style="justify-content: center;">
+                            <input onclick="return placeOrder()" type="submit" value="Place Order"
+                                style="border: none; color: white; background-color: black;width: 50%;"
+                                class="pt-2 pb-2 mb-5">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    </div>
+    
+
+</div>
+<div id="cop-overlay" onclick="closeCouponOverlay()" class="coupon-overlay">
+
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Coupons</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body " style="background-color: #dedede;">
+       {{#each coupons}}
+       {{#if (eq status 'Valid')}}
+      
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="coupon bg-white rounded mb-3 d-flex justify-content-between">
+                <div class="kiri p-3">
+                    
+                </div>
+                
+                <div class="tengah py-3 d-flex w-100 justify-content-start">
+                    
+                    <div>
+                      <h5 class="mb-0">{{coupon}}</h5>
+                      {{#if (eq disType "percentage")}}
+                      <p class="mb-0">{{discount}}% Off</p>
+                      {{else}}
+                      <p class="pb-0 mb-0">₹{{discount}} instant discount</p>
+                      {{/if}}
+                      {{#if (eq status 'Valid')}}
+                       <p class="pt-0 mt-0 pb-0 mb-0">Valid till : {{expiry}}</p>
+                       {{else}}
+                       <p class="pt-0 mt-0 text-danger">Invalid</p>
+                       {{/if}}
+                       <p class="text-danger pb-0 mb-0">Minimum requiments</p>
+                       <div class="d-flex justify-content-between">
+                        <small class="">Minimum Items : {{minItems}} </small>
+                         <small class="ms-2">Minimum Amount : {{minAmount}} </small>
+                       </div>
+                       
+                    </div>
+                </div>
+                <div class="kanan">
+                    <div class="info m-3 d-flex align-items-center">
+                        <div class="w-100 d-flex align-items-center">
+                           {{#if (eq status 'Valid')}}
+                            <a id="{{coupon}}"  onclick="copy('{{coupon}}')"  class="btn btn-sm btn-outline-primary btn-block">
+                                copy
+                            </a>
+                              {{else}}
+                              <p class="pt-0 mt-0 text-danger">Expired</p>
+                       {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    {{/if}}
+    {{/each}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div id="cop-box" class="coupons-box">
+<div class="container ">
+    <p  onclick="closeCouponOverlay()" ><i class="fa-solid fa-xmark float-end  fs-4 pe-2"></i></p>
+    <br>
+    {{#each coupons}}
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="coupon bg-white rounded mb-3 d-flex justify-content-between">
+                <div class="kiri p-3">
+                    
+                </div>
+                
+                <div class="tengah py-3 d-flex w-100 justify-content-start">
+                    
+                    <div>
+                      <h5 class="mb-0">{{coupon}}</h5>
+                      {{#if (eq disType "percentage")}}
+                      <p class="mb-0">{{discount}}% Off</p>
+                      {{else}}
+                      <p class="pb-0 mb-0">₹{{discount}} instant discount</p>
+                      {{/if}}
+                      {{#if (eq status 'Valid')}}
+                       <p class="pt-0 mt-0">Valid till : {{expiry}}</p>
+                       {{else}}
+                       <p class="pt-0 mt-0 text-danger">Invalid</p>
+                       {{/if}}
+                    </div>
+                </div>
+                <div class="kanan">
+                    <div class="info m-3 d-flex align-items-center">
+                        <div class="w-100 d-flex align-items-center">
+                           {{#if (eq status 'Valid')}}
+                            <a id="{{coupon}}"  onclick="copy('{{coupon}}')"  class="btn btn-sm btn-outline-primary btn-block">
+                                copy
+                            </a>
+                              {{else}}
+                              <p class="pt-0 mt-0 text-danger">Expired</p>
+                       {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
+</div>
+
+
+
+<script>
+    $('#checkOut').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkOut').serialize(),
+            success: (response) => {
+
+                if (response.COD) {
+                    location.href = '/place-order-success-page'
+                } else {
+                    console.log("psy")
+                    razorpayPayment(response)
+                }
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+       
+       console.log(order) 
+        var options = {
+            "key": 'rzp_test_DM8rJQrQ3ZkjGb', // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "COZA Store", //your business name
+            "description": "Test Transaction",
+            "image": "/images/icons/logo-dark.png",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                alert(response.razorpay_payment_id);
+               alert(response.razorpay_order_id);
+                alert(response.razorpay_signature)
+                verifyPayment(response,order)
+            },
+            "prefill": {
+                "name": "Vishnu MK", //your customer's name
+                "email": "vishnu.mk@example.com",
+                "contact": "9876543210"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc" 
+            }
+        }
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            method:'post',
+            data: {
+                payment,
+                order
+            },
+            success:(response)=>{
+                console.log(response)
+                location.href='/place-order-success-page'
+            }
+             
+        })
+    } 
+
+    function couponApply(){
+        let coupon=document.getElementById('coup').value
+        
+        let add=$('#checkOut').serialize()
+        console.log(add)
+        if(coupon==''){
+            document.getElementById('coupErr').innerHTML="Coupon field Empty"
+
+        }else{
+            $.ajax({
+                url:'/coupon-apply',
+                method:'post',
+                data:{code:coupon,address:add},
+                success:(response)=>{
+                    location.reload()
+                    
+                }
+            })
+        }
+    }
+
+    function couponOverlay(){
+        document.getElementById('cop-overlay').style.display='block'
+        document.getElementById('cop-box').style.display='block'
+    }
+    function closeCouponOverlay(){
+        document.getElementById('cop-overlay').style.display='none'
+        document.getElementById('cop-box').style.display='none'
+    }
+    function copy(cop){
+        document.getElementById(cop).innerHTML="Copied"
+        console.log(cop)
+        navigator.clipboard.writeText(cop);
+
+       
+
+    }
+
+    function useWallet(){
+        let wallet=document.getElementById('usewallet')
+        
+        if(wallet.checked==true){
+            
+            $.ajax({
+                url:'/use-wallet',
+                method:'POST',
+                success:(response)=>{
+                        location.reload()
+                }
+            })
+        }else{
+            console.log('false')
+            $.ajax({
+                url:'/disable-wallet',
+                method:'POST',
+                success:(response)=>{
+                        location.reload()
+                }
+            })
+        }
+    }
+
+</script> 
+<style>
+    .coupon .kanan {
+    border-left: 1px dashed #a72b2b;
+    width: 40% !important;
+    position:relative;
+}
+
+.coupon .kanan .info::after, .coupon .kanan .info::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #dedede;
+    border-radius: 100%;
+}
+.coupon .kanan .info::before {
+    top: -10px;
+    left: -10px;
+}
+
+.coupon .kanan .info::after {
+    bottom: -10px;
+    left: -10px;
+}
+.coupon .time {
+    font-size: 1.6rem;
+}
+</style>

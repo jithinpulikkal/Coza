@@ -1,0 +1,112 @@
+<div class="head-img d-flex align-items-center justify-content-center mb-4">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Users</h1>
+</div>
+<div class="container d-none d-md-block">
+    <div class="float-end">
+      <label for="">Filter : </label><select name="" id="" style="border: none;" oninput="usersFilter(this.value)">
+        <option value=" ">All users</option>
+        <option value="active" {{#if (eq filter "active")}}selected{{/if}}>Active Users</option>
+        <option value="blocked" {{#if (eq filter "blocked")}}selected{{/if}}>Blocked Users</option>
+        
+      </select>
+    </div>
+ <table class="table table-hover text-center table-borderless">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col" style="font-size: larger;">Username</th>
+      <th scope="col" style="font-size: larger;">Phone</th>
+      <th scope="col" style="font-size: larger;">Email</th>
+      <th scope="col" style="font-size: larger;">Gender</th>
+      <th scope="col" style="font-size: larger;">Status</th>
+      <th scope="col" style="font-size: larger;">Options</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    {{#if users}}
+    {{#each users}}
+    <tr>
+      {{#if status}}
+      <td><i class="fa-solid fa-user fs-4"></i></td>
+      {{else}}
+      <td><i class="fa-solid fa-user-slash text-danger fs-4"></i></td>
+      {{/if}}
+      <td>{{username}}</td>
+      <td>{{phone}}</td>
+      <td>{{email}}</td>
+      <td>{{gender}}</td>
+      {{#if status}}
+      <td>Active</td>
+      {{else}}
+      <td class="text-danger">Blocked</td>
+      {{/if}}
+    <td class="">
+        {{#if status}}
+        <a href="/admin/ban-user/{{_id}}" onclick="return confirm('Do you want to Block {{username}}?')"  class="edt-btn bg-secondary pt-1 pb-1 ps-3 pe-3">Block </a> 
+        {{else}}
+        <a href="/admin/unblock-user/{{_id}}" onclick="return confirm('Do you want to Unblock {{uname}}?')"  class="edt-btn bg-success pt-1 pb-1 ps-3 pe-3">Unblock </a>  
+        {{/if}}
+    
+         <a href="/admin/delete-user/{{_id}}"   onclick="return confirm('Do you want to Delete {{username}}?')" class="dlt-btn bg-danger pt-1 pb-1 ps-3 pe-3 ms-2" >Delete </a></td>
+    </tr>
+    {{/each}}
+    {{else}}
+    <tr>
+      <td colspan="7" class="fs-4 text-center">No results found</td>
+    </tr>
+    {{/if}}
+   
+  </tbody>
+</table>
+
+</div>
+
+<div class="container d-block d-md-none">
+    
+<table class="table table-hover ">
+
+  <thead>
+    
+    <tr>
+      <th scope="col">User Data</th>
+      <th scope="col">Options</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{username}} <br>
+      {{phone}} <br>
+      {{email}} <br>
+      Active:{{status}}
+
+      </th>
+      
+          <td class="float-end">
+        {{#if status}}
+        <a href="/admin/ban-user/{{_id}}" onclick="return confirm('Do you want to Block {{username}}?')"  class="edt-btn bg-secondary pt-1 pb-1 ps-3 pe-3">Block</a>
+        {{else}}
+        <a href="/admin/unblock-user/{{_id}}" onclick="return confirm('Do you want to Unblock {{uname}}?')"  class="edt-btn bg-success pt-1 pb-1 ps-3 pe-3 ">Unblock </a>
+        {{/if}}
+         <a href="/admin/delete-user/{{_id}}"  onclick="return confirm('Do you want to Block {{username}}?')" class="dlt-btn bg-danger pt-1 pb-1 ps-3 pe-3 ms-1" >Delete </a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+
+<script>
+  function usersFilter(v){
+    console.log(v)
+    $.ajax({
+      url:'/admin/user-filter',
+      method:'POST',
+      data:{filter:v},
+      success:(response)=>{
+        location.reload()
+      }
+    })
+  }
+</script>

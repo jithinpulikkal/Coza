@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info nav-border">
+    <div class="container-fluid ms-5">
+        <img src="/images/icons/logo-white.png" alt="" width="100px" onclick="window.location.href='/admin'">
+        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars text-dark"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item ms-md-4 ">
+                    <a class="nav-link active text-dark fs-6" aria-current="page" href="/admin/categories">Categories</a>
+                </li>
+                
+                <li class="nav-item ms-md-2">
+                    <a class="nav-link active text-dark fs-6" href="/admin/products">Products</a>
+                </li>
+                
+                <li class="nav-item ms-md-2">
+                    <a class="nav-link active text-dark fs-6" href="/admin/user-list">Users</a>
+                </li>
+                <li class="nav-item ms-md-2">
+                    <a class="nav-link active text-dark fs-6" href="/admin/all-orders">Orders </a>
+                </li>
+                <li class="nav-item dropdown">
+                    {{!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                    </a> --}}
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#"></a></li>
+                        <li><a class="dropdown-item" href="#"> </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#"></a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="d-none d-lg-flex">
+            <form class="d-none d-lg-flex">
+              
+               
+                <div class="nav-search-box ps-3 pt-3 pe-4 d-flex">
+                    <i class="fa fa-user fs-4"></i>
+                
+                    <p class="ms-3" style="cursor: pointer;"> </p>
+                    
+                    <p onclick="openNav()" class="ms-3" style="cursor: pointer;"><a
+                            style="text-decoration: none; color: white;">Admin : {{admin.username}}</a></p>
+                   
+                </div>
+                
+                
+               
+            </form>
+        </div>
+    </div>
+    <div class="d-lg-none d-flex " style="width: 100%;">
+    
+        <div onclick="openNav()" class="head-search-box ps-1 pt-1 pe-4 d-flex  ">
+    
+            <i class="fa-regular fa-user fs-6 pt-1 "></i>
+            <p class="ms-3"> Admin : {{admin.username}}</p>
+        </div>
+    </div>
+</nav>
+<div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="nav-search-box ps-3 pt-3 pe-4 d-flex mb-4">
+            {{!-- <i class="fa-regular fa-user fs-4"></i> --}}
+            <img src="/images/admin.png" alt="" style="border-radius: 5px;">
+            
+            <p class="ms-3 fs-4" onclick="" style="cursor: pointer;"> {{admin.username}}</p>
+           
+          
+        </div>
+                {{!-- <a class="side-nav-opt" href="#">Coupons</a> --}}
+                 {{!-- <a class="side-nav-opt" href="#">Sales Report</a> --}}
+
+        <a class="side-nav-opt" href="/admin/coupons">Coupons</a>
+        <a class="side-nav-opt" href="/admin/sales-report">Sales Report</a>
+        
+        {{!-- <a class="side-nav-opt" href="/admin/banner-image">Banner Image</a> --}}
+       
+        <a class="side-nav-opt" href="/admin/logout">Logout</a>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>

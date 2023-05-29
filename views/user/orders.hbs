@@ -1,0 +1,78 @@
+<br>
+<div class="head-img d-flex align-items-center justify-content-center ">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Orders</h1>
+</div>
+<section>
+    <div class="container mt-3 ">
+        {{#if orderData}}
+        <div class="row pt-4 pb-4">
+            <div class="col-md-12">
+                {{#each orderData}}
+                <div class="card border mb-3 ">
+                    <div class="row">
+                        {{#if (eq orderStatus "adminAcceptCancel")}}
+                        <h6 class="ms-2 pt-2 text-danger">Order Cancelled</h6>
+                        {{else}}{{#if (eq orderStatus "userCancelPending")}}
+                        <h6 class="ms-2 pt-2 text-warning">Processing Cancel</h6>
+                        {{else}}
+                        <h6 class="ms-2 pt-2 text-success">{{orderStatus}}</h6>
+                        {{/if}}
+                        {{/if}}
+
+                        <div class="col-md-6">
+                         
+                            {{#each products}}
+                            <div class="row ps-2 pb-2">
+                                <div class="col-md-6">
+                                    <img class="pb-2 pt-1 pe-2" src="" alt="" width="70px">{{product.product}}
+                                </div>
+                                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                    Qty : {{quantity}}
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        
+                        
+                        
+                        <div class="col-md-2 d-flex  justify-content-center">
+                            Amount : ₹{{discTotal}}
+                        </div>
+                        <div class="col-md-2 d-flex  justify-content-center">
+                            Date : {{Address.date}}
+                        </div>
+                        <div class="col-md-2 pb-3 pb-md-0 d-flex align-items-center justify-content-center">
+                            <a href="/order/{{_id}}" class="btn btn-primary text-white mb-2">View Details</a>
+                        </div>
+
+                    </div>
+
+                </div>{{/each}}
+            </div>
+            
+        </div>
+        {{else}}
+<h3 class="text-center mb-0 pb-0">No orders found!!</h3>
+        <div class="d-flex justify-content-center align-items-center">
+            
+        </div>
+        
+        {{/if}}
+    </div>
+</section>
+
+<div class="container mt-5">
+
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                
+                {{#each pageArr}}
+                
+                <li  {{#if (eq ../page [])}} class="page-item active" {{else}} class="page-item" {{/if}} ><a class="page-link" href="/paginationn/{{[]}}">{{[]}}</a></li>
+                {{/each}}
+                
+            </ul>
+            </nav>
+        </div>
+</div>

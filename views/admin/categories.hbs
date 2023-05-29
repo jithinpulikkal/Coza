@@ -1,0 +1,55 @@
+<div class="head-img d-flex align-items-center justify-content-center">
+    <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Categories</h1>
+</div>
+<div class="container mt-5">
+{{#if category}}
+<form action="/admin/edit-category/{{category._id}}" method="post">
+       <div class="d-flex">
+         <input type="text" name="category" style="width: 90%;" placeholder="" value="{{category.category}}">
+         <input style="border: none;" class="dlt-btn bg-primary ms-1 " type="submit" value="Edit Category">
+       </div>
+       <p class="text-danger text-center">{{err}}</p>
+    </form>
+{{else}}
+    <form action="/admin/add-category" method="post">
+       <div class="d-flex">
+         <input type="text" name="category" style="width: 90%;" placeholder="Add category" value="{{data.category}}">
+         <input style="border: none;" class="dlt-btn bg-success ms-1 " type="submit" value="Add Category">
+       </div>
+       <p class="text-danger text-center">{{err}}</p>
+    </form>
+    {{/if}}
+    <table class="table table-borderless table-hover text-center">
+  <thead>
+   
+    <tr>
+
+      <th scope="col" class="h5" style="font-size: larger;">Categories</th>
+      <th scope="col" class="h5" style="font-size: larger;">Actions</th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+     {{#each categories}}
+    <tr {{#if (eq status false)}} class="bg-secondary bg-gradient text-white" {{/if}}>
+      <td scope="row">{{category}}</td>
+      <td>
+        <a href="/admin/edit-category/{{_id}}" class="dlt-btn bg-primary pb-2 ps-3 pt-2 pe-3">Edit</a>
+
+        {{#if (eq status false)}}
+
+        <a href="/admin/enable-category/{{_id}}" class="dlt-btn bg-success pb-2 ps-3 pt-2 pe-3">Enable</a></td>
+
+        {{else}}
+
+        <a href="/admin/category-disable/{{_id}}"  class="dlt-btn bg-warning pb-2 ps-3 pt-2 pe-3">Disable</a></td>
+
+        {{/if}}
+      </td>
+    </tr>
+
+    {{/each}}
+  </tbody>
+</table>
+</div>

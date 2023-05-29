@@ -1,0 +1,362 @@
+<link rel="stylesheet" href="/stylesheets/profile.css">
+
+
+<div class="container mt-3">
+    <div class="row singleOrderBorder mt-5 card-body">
+        <div class="pb-3 ">
+
+
+            {{#each order.products}}
+            <div class="row">
+                <div class="col-md-2 pt-2">
+                    <img src="/product-images/{{product.Images.[0]}}.jpg" alt="" width="90%">
+                </div>
+                <div class="col-md-5 pt-2">
+                    <h4> {{product.product}}</h4>
+                    <h5 class="text-secondary"> {{product.brand}}</h5>
+                    <h5>₹{{product.offerPrice}}<span style="text-decoration: line-through;"
+                            class="text-secondary ps-2">₹{{product.price}}</span></h5>
+                    <h6>Size : {{size}}</h6>
+                    <h6>Quantity : {{quantity}}</h6>
+                </div>
+            </div>
+            {{/each}}
+
+
+        </div>
+
+
+    </div>
+
+    {{#if (eq order.orderStatus 'adminAcceptCancel')}}{{else}}
+    {{#if (eq order.orderStatus 'orderPlaced')}}
+
+    <div class="row shadow my-2 card-body">
+        <div class="py-3">
+            <h3>Track order</h3>
+
+        </div>
+        <div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <p class="pe-md-5">Order Placed</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-4 pe-md-5">Shipped</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5 pe-md-4">Out for delivery</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5">Delivered</p>
+
+            </div>
+
+        </div>
+    </div>
+    {{else}}
+    {{#if (eq order.orderStatus 'shipped')}}
+    <div class="row shadow my-2 card-body">
+        <div class="py-3">
+            <h3>Track order</h3>
+
+        </div>
+        <div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <p class="pe-md-5">Order Placed</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-4 pe-md-5">Shipped</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5 pe-md-4">Out for delivery</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5">Delivered</p>
+
+            </div>
+
+        </div>
+    </div>
+    {{else}}
+    {{#if (eq order.orderStatus 'outForDelivery')}}
+    <div class="row shadow my-2 card-body">
+        <div class="py-3">
+            <h3>Track order</h3>
+
+        </div>
+        <div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line"></div>
+            <div class="d-block">
+                <div class="track-dot" style=""></div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <p class="pe-md-5">Order Placed</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-4 pe-md-5">Shipped</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5 pe-md-4">Out for delivery</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5">Delivered</p>
+
+            </div>
+
+        </div>
+    </div>
+    {{else}}
+
+
+    {{#if (eq order.orderStatus 'Delivered')}}
+
+
+
+    <div class="row  my-2  card-body shadow ">
+        <div class="py-3">
+            <h3>Track order</h3>
+
+        </div>
+        <div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+            <div class="track-line bg-success"></div>
+            <div class="d-block ">
+                <div class="track-dot bg-success" style=""></div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
+            <div class="d-block">
+                <p class="pe-md-5">Order Placed</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-4 pe-md-5">Shipped</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5 pe-md-4">Out for delivery</p>
+
+            </div>
+
+            <div class="d-block">
+                <p class="ps-md-5">Delivered</p>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    {{/if}}
+
+    {{/if}}
+
+    {{/if}}
+    {{/if}}
+    {{/if}}
+
+
+
+
+
+
+    <div class="row singleOrderBorder mt-3 mb-5   card-body shadow  ">
+        <div class="col-md-4 ps-2 pb-2">
+            <h4 class=" mt-2">Delivery Address</h4>
+            <h6>{{order.Address.name}}</h6>
+            <p class="text-secondary mb-0">{{order.Address.address}}</p>
+            <p class="text-secondary mb-0">{{order.Address.town}}</p>
+            <p class="text-secondary mb-0">{{order.Address.state}}</p>
+            <p class="text-secondary mb-0">{{order.Address.pincode}}</p>
+            <p class="text-secondary mb-0">{{order.Address.phone}}</p>
+            <p class="text-secondary mb-0">{{order.Address.email}}</p>
+
+        </div>
+        <div class=" col-md-4 ">
+            {{#if (eq order.orderStatus 'orderPlaced')}}
+            <h5 class="text-secondary mb-5 mt-3">More Actions</h5>
+            <a href="/invoice/{{order._id}}" target="_blank" class="dwnldbtn text-white bg-dark ps-3 pe-3 pt-3 pb-3 ">Download Invoice</a>
+            {{/if}}
+            {{#if (eq order.orderStatus 'shipped')}}
+            <h5 class="text-secondary mb-5 mt-3">More Actions</h5>
+            <a href="/invoice/{{order._id}}" target="_blank" class="dwnldbtn text-white bg-dark ps-3 pe-3 pt-3 pb-3 ">Download Invoice</a>
+            {{/if}}
+             {{#if (eq order.orderStatus 'outForDelivery')}}
+            <h5 class="text-secondary mb-5 mt-3">More Actions</h5>
+            <a href="/invoice/{{order._id}}" target="_blank" class="dwnldbtn text-white bg-dark ps-3 pe-3 pt-3 pb-3 ">Download Invoice</a>
+            {{/if}}
+             {{#if (eq order.orderStatus 'Delivered')}}
+            <h5 class="text-secondary mb-5 mt-3">More Actions</h5>
+            <a href="/invoice/{{order._id}}"  target="_blank" class="dwnldbtn text-white bg-dark ps-3 pe-3 pt-3 pb-3 ">Download Invoice</a>
+            {{/if}}
+        </div>
+        <div class="col-md-3 d-flex mt-5  mt-md-0" style="align-items: center;">
+
+            {{#if (eq order.orderStatus 'adminAcceptCancel')}}
+            <img src="/images/cancel.png" alt="" width="50%" class="pt-4" style="opacity: 0.7;">
+            <h5 class="text-danger pt-4 ">Your order is Cancelled</h5>
+            {{else}}
+            {{#if (eq order.orderStatus 'userCancelPending')}}
+            <img src="/images/pending.webp" alt="" width="50%" class="pt-4" style="opacity: 0.7;">
+            <h5 class="text-warning pt-4 ">Processing your cancel request</h5>
+            {{else}} {{#if (eq order.orderStatus 'Delivered')}}
+            <a   data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-danger text-white">Return</a>
+            {{else}}{{#if (eq order.orderStatus "returnPending")}}
+            <img src="/images/pending.webp" alt="" width="50%" class="pt-4" style="opacity: 0.7;">
+            <h5 class="text-warning pt-4 ">Processing your return request</h5>
+            {{else}} {{#if (eq order.orderStatus "returnConfirmed")}}
+            <div class="d-block">
+                <h3>Order Returned</h3>
+            <h5 class="text-primary ">Amount refunded to your wallet</h5>
+            </div>
+            {{else}} 
+
+            <a href="/cancel-order/{{order._id}}" class="btn btn-danger text-white">Cancel Order</a>
+            {{/if}}
+            {{/if}}
+            {{/if}}
+            {{/if}}
+            {{/if}}
+
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Order Cancel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ol style="list-style: decimal;">
+            <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Don't want the product anymore </a></li>
+             <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Quality of the product not as expected </a></li>
+             <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Recived wrong item</a></li>
+             <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Don't like the size</a></li>
+             <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Recived a damaged Item</a></li>
+             <li><a onclick="returnPro(this.innerHTML,'{{order._id}}')">Product is missing in the package</a></li>
+        </ol>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function returnPro(reason,id){
+       $.ajax({
+        url:'/return',
+        method:'POST',
+        data:{reason:reason,id:id},
+        success:(response)=>{
+            location.reload()
+        }
+       })
+    }
+</script>

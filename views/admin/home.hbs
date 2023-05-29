@@ -1,0 +1,406 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<section class="bg-light pt-4 mb-5" style="width: 100%; height: 100% ">
+
+    <div class="container px-3">
+        <div class="row gx-4">
+            <div class="col-md-3 ">
+                <div class="p-3  bg-white  dash-top-div d-flex" style="height: 100px; width: 100%;">
+                    <div class="icon-dash  d-flex align-items-center justify-content-center fs-3 text-white icon-dash"
+                        style="width: 30%;height: 100%; background-color: #57b05b;">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                    </div>
+                    <div class="ps-2">
+                        <h5>Revenue</h5>
+                        <h5 class="">₹<span id="count1">{{revenue}}</span></h5>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3  bg-white  dash-top-div d-flex" style="height: 100px;">
+                    <div class="icon-dash  d-flex align-items-center justify-content-center fs-3 text-white icon-dash"
+                        style="width: 30%;height: 100%; background-color: #318aec;">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="ps-2">
+                        <h5>Users</h5>
+                        <h4 id="count2" class="">{{userCount}}</h4>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3  bg-white  dash-top-div   d-flex" style="height: 100px;">
+                    <div class="icon-dash  d-flex align-items-center justify-content-center fs-3 text-white icon-dash"
+                        style="width: 30%;height: 100%; background-color: #e93a75;">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div class="ps-2">
+                        <h5>Orders</h5>
+                        <h4 id="count3" class="">{{ordersCount}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3  bg-white  dash-top-div  d-flex" style="height: 100px;">
+                    <div class="icon-dash bg-danger  d-flex align-items-center justify-content-center fs-3 text-white icon-dash"
+                        style="width: 30%;height: 100%; background-color:;">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <div class="ps-2">
+                        <h5>Orders</h5>
+                        <h4 id="count4" class="">{{cancelCount}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 gx-1  d-flex justify-content-center">
+
+            <div class="col-lg-4  bg-lg-white pt-4 dash-py pe-5" style="max-width: 80vw;">
+                <div class="container " style="max-width: 80vw;">
+                    <div class="chart-container  " style="max-width: 80vw;">
+                    <canvas class="px-sm-4 pe-3 px-lg-0" id="myChart" style="max-width: 80vw;"></canvas>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 ps-4 mt-lg-1 mt-5">
+                <div class=" dash-py ">
+                    <div id="chartContainer">
+                    <canvas id="barGraph"></canvas>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-4 gx-1  d-flex justify-content-center">
+
+            <div class="d-none">
+            <h4>Sales by Category:</h4>
+            <ul>
+                {{#each sales}}
+                <li> {{_id}} ({{total}})</li>
+                {{/each}}
+            </ul>
+            </div>
+
+
+
+           
+
+
+             <div class="row gx-1 col-lg-4 mt-1 bg-lg-white pt-4 dash-py pe-5" style="max-width: 80vw;">
+                <div class="container " style="max-width: 80vw;">
+                    <div class="chart-container  " style="max-width: 80vw;">
+                    <canvas class="px-sm-4 pe-3 px-lg-0" id="doughnutChart" style="max-width: 80vw;"></canvas>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 ps-4 mt-lg-1 mt-5">
+                <div class=" dash-py ">
+                    <div id="chartContainer">
+                    <canvas id="lineGraph"></canvas>
+                </div>
+                </div>
+            </div>
+            
+        </div>
+
+            <style>
+                #chartContainer {
+                    width: 100%;
+                    height: auto;
+                }
+            
+                #barGraph {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                #lineGraph {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+
+            <script>
+                // Data
+                
+                $.ajax({
+                    url:'/admin/getChart-data',
+                    method:'GET',
+                    success:(reve)=>{
+                        console.log(reve)
+                        let Data=[]
+                        let Month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+                        reve.forEach(value=>{
+
+                            Data.push({'label':Month[value._id-1],'value':value.revenue})
+                        })
+                         let rev = parseInt(document.getElementById('count1').innerHTML)
+                         
+                const barData = Data;
+
+                // Chart creation
+                const chartCanvas = document.getElementById('barGraph');
+
+                new Chart(chartCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: barData.map(data => data.label),
+                        datasets: [{
+                            label: 'Revenue',
+                            data: barData.map(data => data.value),
+                            backgroundColor: '#57b05b'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+                    }
+                    
+                })
+
+               
+
+            </script>
+
+
+     <script>
+    // Data
+    $.ajax({
+        url:'/admin/getChart-data',
+        method:'GET',
+        success:(reve)=>{
+            console.log(reve)
+            let Data=[]
+            let Month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+            reve.forEach(value=>{
+                Data.push({'label':Month[value._id-1],'value':value.revenue})
+            })
+
+            const lineData = convertToWeeklyData(Data);
+
+            // Chart creation
+            const chartCanvas = document.getElementById('lineGraph');
+
+            new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                    labels: lineData.map(data => data.label),
+                    datasets: [{
+                        label: 'Revenue',
+                        data: lineData.map(data => data.value),
+                        backgroundColor: 'rgba(87, 176, 91, 0.2)',
+                        borderColor: '#57b05b',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#57b05b',
+                        pointRadius: 4,
+                        pointBorderWidth: 2,
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                            }
+                        }]
+                    }
+                }
+               // options: {
+                //    scales: {
+                //        y: {
+                //            beginAtZero: true,
+                //            ticks: {
+                 //               stepSize: 1000
+                //            }
+                //        }
+                //    }
+                //}
+            });
+        }                    
+    });
+
+    // Function to convert monthly data to weekly data
+    function convertToWeeklyData(monthlyData) {
+        const weeklyData = [];
+        let weeklyValue = 0;
+        let weekLabel = 1;
+
+        monthlyData.forEach(data => {
+            const monthValue = data.value;
+            const weeksInMonth = 4; // Assuming 4 weeks in a month
+
+            for (let i = 0; i < weeksInMonth; i++) {
+                weeklyData.push({
+                    'label': 'Week ' + weekLabel,
+                    'value': Math.round(monthValue / weeksInMonth)
+                });
+                weeklyValue += Math.round(monthValue / weeksInMonth);
+                weekLabel++;
+            }
+        });
+
+        // Adjust the last week's value to match the total monthly value
+        const lastIndex = weeklyData.length - 1;
+        const lastValue = weeklyData[lastIndex].value;
+        weeklyData[lastIndex].value += (monthlyData[monthlyData.length - 1].value - weeklyValue);
+
+        return weeklyData;
+    }
+</script>
+
+
+
+         
+
+
+        
+    </div>
+
+</section>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        function counter(id, start, end, duration) {
+            let obj = document.getElementById(id),
+                current = start,
+                range = end - start,
+                increment = end > start ? 1 : -1,
+                step = Math.abs(Math.floor(duration / range)),
+                timer = setInterval(() => {
+                    current += increment;
+                    obj.textContent = current;
+                    if (current == end) {
+                        clearInterval(timer);
+                    }
+                }, step);
+        }
+        let rev = parseInt(document.getElementById('count1').innerHTML)
+        let user = parseInt(document.getElementById('count2').innerHTML)
+        let ord = parseInt(document.getElementById('count3').innerHTML)
+        let canc = parseInt(document.getElementById('count4').innerHTML)
+        counter("count1", rev - 400, rev, 1);
+        
+       if(user > 0){
+         counter("count2", 0, user, 2500);
+       }
+        if (ord > 0){
+           counter("count3", 0, ord, 1000); 
+        }
+        
+        if (canc > 0) {
+            counter("count4", 0, canc, 1000);
+        }
+
+    });
+
+
+    // Data for the chart
+    let canc = parseInt(document.getElementById('count4').innerHTML)
+    let ord = parseInt(document.getElementById('count3').innerHTML) - canc
+
+    var data = {
+        labels: ["Cancelled Orders", "Successful Orders"],
+        datasets: [{
+            data: [canc, ord],
+            backgroundColor: ["#dc3545", "#36A2EB", "#FFCE56"]
+        }]
+    };
+
+    // Options for the chart
+    var options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            position: 'bottom',
+            labels: {
+                fontColor: 'black',
+                fontSize: 16
+            }
+        }
+    };
+
+    // Get the canvas element
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    // Create the chart
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
+
+
+   
+
+</script>
+
+ <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Extract the data from the HTML template
+    let salesData = [];
+    let salesListItems = document.querySelectorAll('.row.mt-4.gx-1 ul li');
+
+    salesListItems.forEach((item) => {
+      let category = item.innerText.split(' (')[0];
+      let total = parseInt(item.innerText.split(' (')[1].replace(')', ''));
+      salesData.push({ _id: category, total: total });
+    });
+
+    // Extract labels and values from the data
+    let salesLabels = salesData.map(item => item._id);
+    let salesValues = salesData.map(item => item.total);
+
+    // Doughnut chart data
+    let doughnutData = {
+      labels: salesLabels,
+      datasets: [{
+        data: salesValues,
+        backgroundColor: ["#36A2EB", "#FFCE56", "#DC3545", "#28A745", "#6C757D"] 
+      }]
+    };
+
+    // Options for the doughnut chart
+    let doughnutOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        position: 'bottom',
+        labels: {
+          fontColor: 'black',
+          fontSize: 16
+        }
+      }
+    };
+
+    // Get the canvas element
+    let doughnutCtx = document.getElementById("doughnutChart").getContext("2d");
+
+    // Create the doughnut chart
+    let myDoughnutChart = new Chart(doughnutCtx, {
+      type: 'doughnut',
+      data: doughnutData,
+      options: doughnutOptions
+    });
+  });
+</script>
+
+
+
+
