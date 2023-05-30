@@ -61,7 +61,7 @@
     </div>
 </section>
 
-<div class="container mt-5">
+{{!-- <div class="container mt-5">
 
         <div class="d-flex justify-content-end">
             <nav aria-label="Page navigation example">
@@ -75,4 +75,21 @@
             </ul>
             </nav>
         </div>
+</div> --}}
+
+
+<div class="container mt-5">
+    <!-- Order data display goes here -->
+
+    <div class="d-flex justify-content-end">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{#each pageArr}}
+                    <li class="page-item {{#if (eq ../page this)}}active{{/if}}">
+                        <a class="page-link" href="/paginationn/{{this}}">{{this}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        </nav>
+    </div>
 </div>
