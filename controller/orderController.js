@@ -422,11 +422,7 @@ module.exports={
             let userId=req.session.user._id
             let limit=8
             let skip=0
-            let cartCount = 0;
-            let userExist = req.session.user;
-            if (userExist) {
-              cartCount = await cartCout(req.session.user._id);
-            }
+           
             let page=req.session.orderPage
 
             if(!page) page=1   
@@ -435,7 +431,7 @@ module.exports={
             }
 
         let orderData=await orderCollection.find({userId:ObjectId(userId)}).limit(limit).skip(skip).sort({_id:-1}).toArray()
-
+        let cartCount=await CartCount(req.session.user._id)
         
         let orderCount=await orderCollection.countDocuments()
         let c1=Math.ceil(orderCount/limit)
