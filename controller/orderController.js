@@ -441,6 +441,7 @@ module.exports={
         }
 
         res.render('user/orders',{orderData,user,pageArr,page,cartCount})
+        console.log(cartCount);
         }
         catch(err){
             next(err)
