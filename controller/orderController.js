@@ -427,13 +427,13 @@ module.exports={
 
             if(!page) page=1   
             if(req.session.orderPage){
-               skip=(req.session.orderPage-1)*10 
+               skip=(req.session.orderPage-1)*limit 
             }
 
         let orderData=await orderCollection.find({userId:ObjectId(userId)}).limit(limit).skip(skip).sort({_id:-1}).toArray()
         let cartCount=await CartCount(req.session.user._id)
         
-        let orderCount=await orderCollection.countDocuments()
+        let orderCount=await orderCollection.countDocuments({ userId: ObjectId(userId) })
         let c1=Math.ceil(orderCount/limit)
         let pageArr=[]
         for(i=0;i<c1;i++){
@@ -447,6 +447,40 @@ module.exports={
             next(err)
         }
     },
+
+//     viewOrders: async (req, res, next) => {
+//     try {
+//         let user = req.session.user;
+//         let userId = req.session.user._id;
+//         let limit = 8;
+//         let skip = 0;
+
+//         let page = req.session.orderPage;
+//         if (!page) page = 1;
+//         if (req.session.orderPage) {
+//             skip = (req.session.orderPage - 1) * limit;
+//         }
+
+//         let orderData = await orderCollection
+//             .find({ userId: ObjectId(userId) })
+//             .limit(limit)
+//             .skip(skip)
+//             .sort({ _id: -1 })
+//             .toArray();
+//         let cartCount = await CartCount(req.session.user._id);
+
+//         let orderCount = await orderCollection.countDocuments({ userId: ObjectId(userId) });
+//         let pageCount = Math.ceil(orderCount / limit);
+//         let pageArr = [];
+//         for (let i = 0; i < pageCount; i++) {
+//             pageArr.push(i + 1);
+//         }
+
+//         res.render('user/orders', { orderData, user, pageArr, page, cartCount });
+//     } catch (err) {
+//         next(err);
+//     }
+// },
 
     singleOrder:async(req,res,next)=>{
         try{
@@ -831,7 +865,9 @@ module.exports={
         req.session.orderPage=req.params.id
         
         res.redirect('/admin/all-orders')
+
     },  
+
     uPagination:(req,res)=>{
         req.session.orderPage=req.params.id
         
