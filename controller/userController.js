@@ -649,12 +649,41 @@ module.exports={
     },
 
 
-    aboutUs:(req,res)=>{
-        res.render('user/about',{user:req.session.user})
-    },
+    aboutUs:async(req,res)=>{
+
+        try {
+            let cartCount = 0;
+            let userExist = req.session.user;
+            if (userExist) {
+              cartCount = await cartCout(req.session.user._id);
+            }
+            let userId = req.session.user._id;
+            let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
+            console.log(wallets);
+            res.render('user/about',{user:req.session.user,cartCount});
+          } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+          }
+        },
 
 
-    contact:(req,res)=>{
+    contact:async(req,res)=>{
+        try {
+            let cartCount = 0;
+            let userExist = req.session.user;
+            if (userExist) {
+              cartCount = await cartCout(req.session.user._id);
+            }
+            let userId = req.session.user._id;
+            let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
+            console.log(wallets);
+            res.render('user/contact',{user:req.session.user,cartCount});
+          } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+          }
+
         res.render('user/contact',{user:req.session.user})
     },
 

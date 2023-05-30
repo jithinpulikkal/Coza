@@ -422,6 +422,11 @@ module.exports={
             let userId=req.session.user._id
             let limit=8
             let skip=0
+            let cartCount = 0;
+            let userExist = req.session.user;
+            if (userExist) {
+              cartCount = await cartCout(req.session.user._id);
+            }
             let page=req.session.orderPage
 
             if(!page) page=1   
@@ -439,7 +444,7 @@ module.exports={
             pageArr.push(i+1)
         }
 
-        res.render('user/orders',{orderData,user,pageArr,page})
+        res.render('user/orders',{orderData,user,pageArr,page,cartCount})
         }
         catch(err){
             next(err)

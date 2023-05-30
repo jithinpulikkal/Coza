@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 mongoose.set('strictQuery',false)
 // Connection URL
-const url = "mongodb://127.0.0.1:27017/web";
+const url = process.env.MONGO_URL;
 
 // Connect to MongoDB
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
