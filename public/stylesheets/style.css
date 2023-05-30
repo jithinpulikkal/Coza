@@ -90,7 +90,7 @@ h1,h2,h3,h4,h5{
 .banner-data{
   position: relative;
   top: 50%;
-  left: 68%;
+  left: 50%;
   width: fit-content;
 }
 .banner-title{
@@ -169,6 +169,8 @@ h1,h2,h3,h4,h5{
   justify-content: center;
   align-items: center;
 }
+
+
 .f-list a{
   list-style-type: none;
   color: #6c757d;
