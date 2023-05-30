@@ -656,12 +656,16 @@ module.exports={
             let userExist = req.session.user;
             if (userExist) {
               cartCount = await cartCout(req.session.user._id);
-            }
+            
             let userId = req.session.user._id;
             let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
+           
             console.log(wallets);
             res.render('user/about',{user:req.session.user,cartCount});
-          } catch (error) {
+          }
+          else
+          res.render('user/about')
+        } catch (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
           }
@@ -674,13 +678,17 @@ module.exports={
             let userExist = req.session.user;
             if (userExist) {
               cartCount = await cartCout(req.session.user._id);
-            }
+            
             let userId = req.session.user._id;
             let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
             
             console.log(wallets);
             res.render('user/contact',{user:req.session.user,cartCount});
-          } catch (error) {
+          }
+          else
+          res.render('user/contact')
+         }
+          catch (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
           }
