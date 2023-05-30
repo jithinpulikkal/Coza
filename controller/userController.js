@@ -652,10 +652,13 @@ module.exports={
     aboutUs:async(req,res)=>{
 
         try {
-           
+            let cartCount = 0;
+            let userExist = req.session.user;
+            if (userExist) {
+              cartCount = await cartCout(req.session.user._id);
+            }
             let userId = req.session.user._id;
             let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
-            let cartCount=await CartCount(req.session.user._id)
             console.log(wallets);
             res.render('user/about',{user:req.session.user,cartCount});
           } catch (error) {
@@ -667,10 +670,14 @@ module.exports={
 
     contact:async(req,res)=>{
         try {
-           
+            let cartCount = 0;
+            let userExist = req.session.user;
+            if (userExist) {
+              cartCount = await cartCout(req.session.user._id);
+            }
             let userId = req.session.user._id;
             let wallets = await walletTransaction.find({ userId: ObjectId(userId) })
-            let cartCount=await CartCount(req.session.user._id)
+            
             console.log(wallets);
             res.render('user/contact',{user:req.session.user,cartCount});
           } catch (error) {
