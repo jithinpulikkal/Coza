@@ -192,6 +192,9 @@ module.exports = {
             if (userExist) {
                 if (!userExist.verified){
                     response = "Your account is not verified. Try OTP login or Contact us";
+                    req.session.loginErr = response;
+                    req.session.loginData = req.body;
+                    res.redirect("/login");
                 }
                 else if (userExist.status && userExist.verified) {
                     bcrypt.compare(userData.password, userExist.password).then((status) => {
