@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="/stylesheets/login.css" />
+
+<div>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-signup100">
+                <form
+                    name="otp-verify"
+                    onsubmit="return verifyOTP()"
+                    action="/verify-otp"
+                    method="post"
+                    class="login100-form validate-form"
+                >
+                    <span class="signup100-form-title">
+                        Verify OTP
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="OTP is required">
+                        <input
+                            class="input100"
+                            type="text"
+                            name="otp"
+                            placeholder="Enter OTP"
+                            required
+                            autocomplete="off"
+                        />
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <p class="text-danger" id="otpErr">{{otpErr}}</p>
+
+                    <button class="container-login100-form-btn">
+                        <input
+                            type="submit"
+                            value="Verify OTP"
+                            class="login100-form-btn"
+                        />
+                    </button>
+
+                    <div class="signin text-center pt-2">
+                        <a href="/signup" class="mb-2 text-center">Resend OTP</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

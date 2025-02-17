@@ -27,6 +27,16 @@ const userSchema1=new mongoose.Schema({
     },
     address:{
         type:Array
+    },
+    verified:{
+        type:Boolean,
+        required:true
+    },
+    key:{
+        type:Number,
+    },
+    otpCreatedAt:{
+        type:Date,
     }
 })
 

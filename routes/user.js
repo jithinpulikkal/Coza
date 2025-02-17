@@ -35,6 +35,9 @@ router.get('/otp-login', nocache(), userController.otpLogin)
 router.post('/sent-otp',userController.sendOTP)
 router.post('/otp-login',userController.otpLoginPost)
 
+router.get('/otp-signup', nocache(), userController.otpSignup)
+router.post('/otp-signup',userController.otpSignupPost)
+
 router.get('/profile',verifyLogin,userController.userProfile)
 router.post('/update-user-data',userController.updateUserData)
 router.get('/wallet',verifyLogin,userController.wallet)
