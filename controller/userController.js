@@ -190,7 +190,10 @@ module.exports = {
             let userExist = await user.findOne({ email: userData.email });
             let response;
             if (userExist) {
-                if (userExist.status && userExist.verified) {
+                if (!userExist.verified){
+                    response = "Your account is not verified. Try OTP login or Contact us";
+                }
+                else if (userExist.status && userExist.verified) {
                     bcrypt.compare(userData.password, userExist.password).then((status) => {
                         if (status) {
                             req.session.user = userExist;
@@ -272,7 +275,7 @@ module.exports = {
                     let details = {
                         from: "coza.store.connect@gmail.com",
                         to: otpEmail,
-                        subject: "Coza Store",
+                        subject: "Coza Store OTP",
                         text: otp + " is your Coza Store verification code. Do not share OTP with anyone ",
                     };
 
@@ -297,7 +300,7 @@ module.exports = {
                     req.session.otpUser = response.user;
                     res.redirect("/otp-login");
                 } else {
-                    response.err = "User Email is Banned.Please Contact With us";
+                    response.err = "User Email is Banned. Please Contact us";
                     req.session.otpErr = response.err;
                     req.session.otpData = req.body;
                     res.redirect("/otp-login");
