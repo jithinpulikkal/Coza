@@ -99,12 +99,14 @@ module.exports = {
                 if (err) {
                     console.error("OTP Email Error:", err);
                     req.session.signupErr = "Failed to send OTP. Please try again.";
+                    req.session.user = null;
                     return res.redirect("/signup");
                 } else {
                     console.log("OTP Sent Successfully");
                     req.session.otp = otp;
                     req.session.otpData = req.body;
                     req.session.otpUser = newUser;
+                    req.session.user = null;
                     return res.redirect("/otp-signup");
                 }
             });
@@ -120,6 +122,7 @@ module.exports = {
         let invalid = req.session.InvalidOtp;
         res.render("user/otp-verify", { otp, data, err, invalid, login: true });
         req.session.otpErr = null;
+        req.session.user = null;
     },
 
     otpSignupPost: async (req, res, next) => {
@@ -473,7 +476,7 @@ module.exports = {
         }
     },
 
-    
+
     addAddress: (req, res) => {
         res.render("user/add-address", { user: req.session.user });
     },
