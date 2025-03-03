@@ -473,6 +473,7 @@ module.exports = {
         }
     },
 
+    
     addAddress: (req, res) => {
         res.render("user/add-address", { user: req.session.user });
     },
