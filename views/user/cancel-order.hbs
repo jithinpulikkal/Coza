@@ -1,67 +1,116 @@
-<div class="container mt-4">
-    <div class="row "   >{{#if (eq orderData.products.length 1)}}
-        {{else}}
-        <p class=" text-danger pb-3 fs-5">These are the items in the same order.*</p>
-        {{/if}}
-        <div class="col-md-5 border d-flex align-items-center" style="overflow-x: scroll; overflow-y: hidden;">
-            
-        {{#each orderData.products}}
-        <div class="me-2 card border mt-4 mb-3 me-2 ms-2" style="min-width: 10rem; max-width: 10rem;">
-            <img src="/product-images/{{product.Images.[0]}}.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">{{product.brand}}</p>
+<section class="orders-shell cancel-order-shell">
+    <div class="container mt-4">
+        <div class="order-card-modern cancel-order-card">
+            <div class="cancel-order-head">
+                <div>
+                    <span class="shop-eyebrow">Order support</span>
+                    <h2>Cancel this order</h2>
+                    <p>Tell us why you want to cancel so we can process the request correctly.</p>
+                </div>
+                <span class="order-status-pill status-cancelled">Cancellation Request</span>
+            </div>
+
+            {{#if (eq orderData.products.length 1)}}
+            {{else}}
+            <div class="cancel-order-note">
+                These items belong to the same order and may be affected together.
+            </div>
+            {{/if}}
+
+            <div class="cancel-order-layout">
+                <div class="cancel-order-products-panel">
+                    <div class="single-order-section-head">
+                        <h3>Items in this order</h3>
+                        <p>Review the products before confirming cancellation.</p>
+                    </div>
+
+                    <div class="cancel-order-products-list">
+                        {{#each orderData.products}}
+                        <article class="cancel-order-product-card">
+                            <label class="cancel-order-check">
+                                {{#if canCancel}}
+                                <input type="checkbox" name="selectedItems" value="{{lineIndex}}">
+                                <span></span>
+                                {{else}}
+                                <input type="checkbox" disabled>
+                                <span></span>
+                                {{/if}}
+                            </label>
+                            <div class="cancel-order-product-image">
+                                <img src="/product-images/{{product.Images.[0]}}.jpg" alt="{{product.product}}">
+                            </div>
+                            <div class="cancel-order-product-copy">
+                                <strong>{{product.product}}</strong>
+                                <span>{{product.brand}}</span>
+                                <small>Qty {{quantity}}</small>
+                                {{#if isCancelled}}
+                                <em class="cancel-order-item-state text-danger">Already cancelled</em>
+                                {{else}}{{#if isCancelPending}}
+                                <em class="cancel-order-item-state text-warning">Cancellation pending</em>
+                                {{/if}}{{/if}}
+                            </div>
+                        </article>
+                        {{/each}}
+                    </div>
+                </div>
+
+                <div class="cancel-order-form-panel">
+                    <div class="single-order-section-head">
+                        <h3>Reason for cancellation</h3>
+                        <p>Choose the main reason and add a short explanation.</p>
+                    </div>
+
+                    <form name="cancelForm" onsubmit="return cancelFormValidation()"
+                        action="/cancel-order/{{orderData._id}}" method="post" class="cancel-order-form">
+                        <label for="reason" class="cancel-order-label">Reason</label>
+                        <select name="reason" id="reason" class="cancel-order-select">
+                            <option value="">Choose Reason</option>
+                            <option value="The delivery is delayed">The delivery is delayed</option>
+                            <option value="Expected delivery time is too long.">Expected delivery time is too long.</option>
+                            <option value="Item Price/shipping cost is too high.">Item Price/shipping cost is too high.</option>
+                            <option value="Need to change the shipping address.">Need to change the shipping address.</option>
+                            <option value="Bought it somewhere else.">Bought it somewhere else.</option>
+                            <option value="My reason is not listed.">My reason is not listed.</option>
+                        </select>
+
+                        <label for="feedback" class="cancel-order-label">Feedback</label>
+                        <textarea name="feedback" id="feedback" class="cancel-order-textarea" cols="30" rows="6"
+                            placeholder="Share a short note about why you want to cancel this order"></textarea>
+
+                        <p class="text-danger cancel-order-error" id="cancelerr"></p>
+
+                        <div class="cancel-order-actions">
+                            <a href="/order/{{orderData._id}}" class="cancel-order-back">Back to Order</a>
+                            <input type="submit" class="cancel-order-submit" value="Cancel Order">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        {{/each}}
-        </div>
-         <div class="col-md-7">
-    <div class="container mt-5">
-        <form name="cancelForm" onsubmit="return cancelFormValidation()" action="/cancel-order/{{orderData._id}}" method="post">
-         <select name="reason" id="reason" style="width: 80%; height: 35px;">
-        <option value="">Choose Reason</option>
-        <option value="The delivery is delayed">The delivery is delayed</option>
-        <option value="Expected delivery time is too long.">Expected delivery time is too long.</option>
-        <option value="Item Price/shipping cost is too high.">Item Price/shipping cost is too high.</option>
-        <option value="Need to change the shipping address.">Need to change the shipping address.</option>
-        <option value="Bought it somewhere else.">Bought it somewhere else.</option>
-        <option value="My reason is not listed.">My reason is not listed.</option>
-    </select>
-
-    <textarea name="feedback" id="" class="mt-3" style="width: 100%;" cols="30" rows="5" placeholder="Feedback"></textarea>
-    <p class="text-danger" id="cancelerr"></p>
-    <input type="submit" class="cancel-btn float-end" value="Cancel Order">
-    </form>
     </div>
-   </div>
-    </div>
-    
-
-  
-    
-</div>
+</section>
 
 <script>
-    function selectReason(content){
-        console.log(content)
-    }
-
-    function cancelFormValidation(){
-        reason=document.cancelForm.reason.value
-        feedback=document.cancelForm.feedback.value
-        let err=document.getElementById('cancelerr')
-        let regex=/^(\w)([A-Za-z0-9 -]){5,200}$/gm
-        if(reason==''){
-            err.innerHTML="Select a reason"
+    function cancelFormValidation() {
+        let selectedItems = document.querySelectorAll('input[name="selectedItems"]:checked')
+        reason = document.cancelForm.reason.value
+        feedback = document.cancelForm.feedback.value
+        let err = document.getElementById('cancelerr')
+        let regex = /^(\w)([A-Za-z0-9 -]){5,200}$/gm
+        if (selectedItems.length === 0) {
+            err.innerHTML = "Select at least one item to cancel"
             return false
-        }else if(feedback==""){
-            err.innerHTML="Feedback field required"
+        } else if (reason == '') {
+            err.innerHTML = "Select a reason"
             return false
-        }else if(regex.test(feedback)==false){
-             err.innerHTML="Feedback can only conatain spaces and '-' & length should be 5 words or more"
-             return false
+        } else if (feedback == "") {
+            err.innerHTML = "Feedback field required"
+            return false
+        } else if (regex.test(feedback) == false) {
+            err.innerHTML = "Feedback can only conatain spaces and '-' & length should be 5 words or more"
+            return false
         }
-        
-        return true
 
+        return true
     }
 </script>

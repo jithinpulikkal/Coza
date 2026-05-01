@@ -1,0 +1,24 @@
+{
+  "watch": [
+    "app.js",
+    "bin",
+    "config",
+    "controller",
+    "middlewares",
+    "model",
+    "routes",
+    "views"
+  ],
+  "ext": "js,json,hbs",
+  "ignore": [
+    ".git",
+    ".dist",
+    "node_modules",
+    "public/product-images/*",
+    "server.out.log",
+    "server.err.log",
+    "vercel.json"
+  ],
+  "exec": "node ./bin/www",
+  "delay": "300"
+}

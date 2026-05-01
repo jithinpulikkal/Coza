@@ -1,330 +1,615 @@
-<div class="receipt-content">
-    <div class="container bootstrap snippets bootdey">
-		<div class="row ">
-			<div class="col-md-12">
-				<div class="invoice-wrapper ">
-                    <h3 class="text-center pb-3">COZA Store</h3>
-					<div class="mb-0 pb-0 pt-1">
-						Hi <strong>{{order.username}}</strong>, 
-						<br>
-						
-					</div>
+<div class="invoice-page">
+    <div class="invoice-card">
+        <header class="invoice-header">
+            <div class="invoice-brand-block">
+                <span class="invoice-eyebrow">Retail Invoice</span>
+                <h1>COZA Store</h1>
+                <p class="invoice-subtitle">A polished summary of your purchase.</p>
+            </div>
+            <div class="invoice-header-side">
+                <div class="invoice-status">Paid</div>
+                <div class="invoice-number-chip">#{{order._id}}</div>
+            </div>
+        </header>
 
-					<div class="payment-info p-0 m-0 mb-1 pt-1">
-						<div class="row">
-							<div class="col-sm-6">
-								<span>Payment No.</span>
-								<strong>{{order._id}}</strong>
-							</div>
-							<div class="col-sm-6 text-right">
-								<span>Payment Date</span>
-								<strong>{{order.date}}</strong>
-							</div>
-						</div>
-					</div>
+        <section class="invoice-intro">
+            <p>Hello <strong>{{order.username}}</strong>, thanks for shopping with us.</p>
+        </section>
 
-					<div class="payment-details">
-						<div class="row">
-							<div class="col-sm-6">
-								<span>Address</span>
-								<strong>
-									{{order.Address.name}}
-								</strong>
-								<p>
-									{{order.Address.address}} <br>
-									{{order.Address.town}} <br>
-									{{order.Address.pincode}} <br>
-									{{order.Address.state}} <br>
-									<a href="#">
-										{{order.Address.email}}
-									</a>
-								</p>
-							</div>
-							<div class="col-sm-6 text-right">
-								<span>Payment To</span>
-								<strong>
-									COZA Store
-								</strong>
-								<p>
-									
-									<a href="#">
-										coza.store.connect@gmail.com
-									</a>
-								</p>
-							</div>
-						</div>
-					</div>
-<hr style="background-color: #555;">
-					<div class="line-items ">
-                        <div class="mx-auto ">
-                            <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                  
-                                    <th scope="col">Item</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each order.products}}
-                                <tr>
-                                
-                                    <td>{{product.product}}</td>
-                                    <td>{{product.offerPrice}}</td>
-                                    <td>{{quantity}}</td>
-                                    <td>{{mul quantity product.offerPrice}}</td>
-                                </tr>
-                                {{/each}}
-                                
-                            </tbody>
-                        </table>
-                        </div>
-                        <hr style="background-color: #555;">
-						<div class="total text-end pe-5">
-							
-							<div class="field">
-								Subtotal <span>₹{{order.subTotal}}</span>
-							</div>
-							<div class="field">
-								Shipping <span>₹0.00</span>
-							</div>
-							<div class="field">
-								Discount <span>{{minus order.subTotal order.discTotal}}</span>
-							</div>
-							<div class="field grand-total">
-								Total <span>₹{{order.discTotal}}</span>
-							</div>
-						</div>
+        <section class="invoice-meta-grid invoice-doc-grid">
+            <div class="invoice-meta-card">
+                <span>Invoice No.</span>
+                <strong>{{order._id}}</strong>
+            </div>
+            <div class="invoice-meta-card">
+                <span>Invoice Date</span>
+                <strong>{{order.date}}</strong>
+            </div>
+            <div class="invoice-meta-card">
+                <span>Customer</span>
+                <strong>{{order.username}}</strong>
+            </div>
+        </section>
 
-						
-					</div>
-				</div>
+        <section class="invoice-address-grid">
+            <div class="invoice-address-card">
+                <span class="invoice-label">Billed To</span>
+                <strong>{{order.Address.name}}</strong>
+                <p>
+                    {{order.Address.address}}<br>
+                    {{order.Address.town}}<br>
+                    {{order.Address.pincode}}<br>
+                    {{order.Address.state}}<br>
+                    {{order.Address.email}}
+                </p>
+            </div>
+            <div class="invoice-address-card invoice-address-store">
+                <span class="invoice-label">From</span>
+                <strong>COZA Store</strong>
+                <p>
+                    Online Fashion Store<br>
+                    Support Desk<br>
+                    coza.store.connect@gmail.com
+                </p>
+            </div>
+        </section>
 
-				
-			</div>
-		</div>
-	</div>
-</div> 
+        <section class="invoice-items-section">
+            <div class="invoice-section-head">
+                <h2>Items</h2>
+                <span>{{order.products.length}} item(s)</span>
+            </div>
+
+            <div class="invoice-table-wrap">
+                <table class="invoice-table">
+                    <colgroup>
+                        <col class="invoice-col-item">
+                        <col class="invoice-col-mrp">
+                        <col class="invoice-col-discount">
+                        <col class="invoice-col-qty">
+                        <col class="invoice-col-total">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>MRP</th>
+                            <th>Discount</th>
+                            <th>Qty</th>
+                            <th class="align-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each order.products}}
+                        <tr>
+                            <td>
+                                <div class="invoice-item-cell">
+                                    <strong>{{product.product}}</strong>
+                                    <span>{{product.brand}}</span>
+                                </div>
+                            </td>
+                            <td class="invoice-cell-money">&#8377;{{product.price}}</td>
+                            <td class="invoice-cell-discount">{{product.discount}}% off</td>
+                            <td>{{quantity}}</td>
+                            <td class="align-right invoice-cell-money">&#8377;{{mul quantity product.offerPrice}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="invoice-summary-shell">
+            <div class="invoice-note-card">
+                <span class="invoice-label">Note</span>
+                <p>This invoice is generated electronically and is valid without a signature.</p>
+            </div>
+
+            <div class="invoice-total-card">
+                <div class="invoice-total-heading">
+                    <span class="invoice-label">Summary</span>
+                    <strong>Payment Details</strong>
+                </div>
+                <div class="invoice-total-row">
+                    <span>MRP Subtotal</span>
+                    <strong>&#8377;{{order.subTotal}}</strong>
+                </div>
+                <div class="invoice-total-row">
+                    <span>Total Discount</span>
+                    <strong>- &#8377;{{minus order.subTotal order.discTotal}}</strong>
+                </div>
+                <div class="invoice-total-row">
+                    <span>Amount After Discount</span>
+                    <strong>&#8377;{{order.discTotal}}</strong>
+                </div>
+                <div class="invoice-total-row">
+                    <span>Shipping</span>
+                    <strong>&#8377;0.00</strong>
+                </div>
+                <div class="invoice-total-row grand-total">
+                    <span>Payable Total</span>
+                    <strong>&#8377;{{order.discTotal}}</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 
 <script>
-    window.onload(print())
-    
-    
-
-    
+    window.onload = function () {
+        window.print()
+    }
 </script>
 
 <style>
-    .receipt-content .logo a:hover {
-  text-decoration: none;
-  color: #7793C4; 
-}
+    :root {
+        --invoice-text: #172126;
+        --invoice-muted: #6f777a;
+        --invoice-line: rgba(23, 33, 38, 0.12);
+        --invoice-accent: #0f766e;
+        --invoice-accent-soft: rgba(15, 118, 110, 0.1);
+        --invoice-surface: rgba(255, 255, 255, 0.96);
+        --invoice-shadow: 0 24px 48px rgba(15, 23, 31, 0.08);
+    }
 
-.receipt-content .invoice-wrapper {
-  background: #FFF;
-  border: 1px solid #CDD3E2;
-  box-shadow: 0px 0px 1px #CCC;
-  padding: 40px 40px 60px;
-  margin-top: 40px;
-  border-radius: 4px; 
-}
+    * {
+        box-sizing: border-box;
+    }
 
-.receipt-content .invoice-wrapper .payment-details span {
-  color: #A9B0BB;
-  display: block; 
-}
-.receipt-content .invoice-wrapper .payment-details a {
-  display: inline-block;
-  margin-top: 5px; 
-}
+    body {
+        margin: 0;
+        font-family: Poppins, Arial, sans-serif;
+        color: var(--invoice-text);
+        background:
+            radial-gradient(circle at top left, rgba(196, 220, 224, 0.45), transparent 28%),
+            radial-gradient(circle at top right, rgba(247, 223, 162, 0.32), transparent 24%),
+            #f5f1e8;
+    }
 
-.receipt-content .invoice-wrapper .line-items .print a {
-  display: inline-block;
-  border: 1px solid #9CB5D6;
-  padding: 13px 13px;
-  border-radius: 5px;
-  color: #708DC0;
-  font-size: 13px;
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -ms-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear; 
-}
+    .invoice-page {
+        min-height: 100vh;
+        padding: 32px 20px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .print a:hover {
-  text-decoration: none;
-  border-color: #333;
-  color: #333; 
-}
+    .invoice-card {
+        width: min(980px, 100%);
+        margin: 0 auto;
+        background: var(--invoice-surface);
+        border: 1px solid rgba(255, 255, 255, 0.82);
+        border-radius: 32px;
+        box-shadow: var(--invoice-shadow);
+        padding: 36px 38px 40px;
+    }
 
-.receipt-content {
-  background: #ECEEF4; 
-}
-@media (min-width: 1200px) {
-  .receipt-content .container {width: 900px; } 
-}
+    .invoice-header,
+    .invoice-meta-grid,
+    .invoice-address-grid,
+    .invoice-total-row,
+    .invoice-section-head {
+        display: flex;
+    }
 
-.receipt-content .logo {
-  text-align: center;
-  margin-top: 50px; 
-}
+    .invoice-header {
+        justify-content: space-between;
+        gap: 18px;
+        align-items: flex-start;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--invoice-line);
+    }
 
-.receipt-content .logo a {
-  font-family: Myriad Pro, Lato, Helvetica Neue, Arial;
-  font-size: 36px;
-  letter-spacing: .1px;
-  color: #555;
-  font-weight: 300;
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -ms-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear; 
-}
+    .invoice-brand-block {
+        max-width: 560px;
+    }
 
-.receipt-content .invoice-wrapper .intro {
-  line-height: 25px;
-  color: #444; 
-}
+    .invoice-header-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
 
-.receipt-content .invoice-wrapper .payment-info {
-  margin-top: 25px;
-  padding-top: 15px; 
-}
+    .invoice-eyebrow,
+    .invoice-label {
+        display: inline-block;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--invoice-accent);
+        font-weight: 700;
+    }
 
-.receipt-content .invoice-wrapper .payment-info span {
-  color: #A9B0BB; 
-}
+    .invoice-header h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 0.98;
+    }
 
-.receipt-content .invoice-wrapper .payment-info strong {
-  display: block;
-  color: #444;
-  margin-top: 3px; 
-}
+    .invoice-subtitle,
+    .invoice-intro p,
+    .invoice-address-card p,
+    .invoice-note-card p {
+        color: var(--invoice-muted);
+    }
 
-@media (max-width: 767px) {
-  .receipt-content .invoice-wrapper .payment-info .text-right {
-  text-align: left;
-  margin-top: 20px; } 
-}
-.receipt-content .invoice-wrapper .payment-details {
-  border-top: 2px solid #EBECEE;
-  margin-top: 30px;
-  padding-top: 20px;
-  line-height: 22px; 
-}
+    .invoice-subtitle,
+    .invoice-intro p,
+    .invoice-note-card p {
+        margin: 0;
+    }
 
+    .invoice-status {
+        min-height: 42px;
+        padding: 0 18px;
+        border-radius: 999px;
+        background: var(--invoice-accent-soft);
+        color: var(--invoice-accent);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
 
-@media (max-width: 767px) {
-  .receipt-content .invoice-wrapper .payment-details .text-right {
-  text-align: left;
-  margin-top: 20px; } 
-}
-.receipt-content .invoice-wrapper .line-items {
-  margin-top: 40px; 
-}
-.receipt-content .invoice-wrapper .line-items .headers {
-  color: #A9B0BB;
-  font-size: 13px;
-  letter-spacing: .3px;
-  border-bottom: 2px solid #EBECEE;
-  padding-bottom: 4px; 
-}
-.receipt-content .invoice-wrapper .line-items .items {
-  margin-top: 8px;
-  border-bottom: 2px solid #EBECEE;
-  padding-bottom: 8px; 
-}
-.receipt-content .invoice-wrapper .line-items .items .item {
-  padding: 10px 0;
-  color: #696969;
-  font-size: 15px; 
-}
-@media (max-width: 767px) {
-  .receipt-content .invoice-wrapper .line-items .items .item {
-  font-size: 13px; } 
-}
-.receipt-content .invoice-wrapper .line-items .items .item .amount {
-  letter-spacing: 0.1px;
-  color: #84868A;
-  font-size: 16px;
- }
-@media (max-width: 767px) {
-  .receipt-content .invoice-wrapper .line-items .items .item .amount {
-  font-size: 13px; } 
-}
+    .invoice-number-chip {
+        min-height: 34px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: rgba(23, 33, 38, 0.06);
+        color: var(--invoice-text);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total {
-  margin-top: 30px; 
-}
+    .invoice-intro {
+        padding: 22px 0 18px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .extra-notes {
-  float: left;
-  width: 40%;
-  text-align: left;
-  font-size: 13px;
-  color: #7A7A7A;
-  line-height: 20px; 
-}
+    .invoice-meta-grid,
+    .invoice-address-grid {
+        gap: 18px;
+    }
 
-@media (max-width: 767px) {
-  .receipt-content .invoice-wrapper .line-items .total .extra-notes {
-  width: 100%;
-  margin-bottom: 30px;
-  float: none; } 
-}
+    .invoice-summary-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 420px;
+        gap: 22px;
+        align-items: start;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .extra-notes strong {
-  display: block;
-  margin-bottom: 5px;
-  color: #454545; 
-}
+    .invoice-meta-grid,
+    .invoice-address-grid {
+        margin-bottom: 18px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .field {
-  margin-bottom: 7px;
-  font-size: 14px;
-  color: #555; 
-}
+    .invoice-doc-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .field.grand-total {
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 500; 
-}
+    .invoice-meta-card,
+    .invoice-address-card,
+    .invoice-note-card,
+    .invoice-total-card {
+        background: rgba(248, 249, 249, 0.9);
+        border: 1px solid var(--invoice-line);
+        border-radius: 24px;
+        padding: 18px 20px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .field.grand-total span {
-  color: #20A720;
-  font-size: 16px; 
-}
+    .invoice-meta-card,
+    .invoice-address-card {
+        flex: 1;
+    }
 
-.receipt-content .invoice-wrapper .line-items .total .field span {
-  display: inline-block;
-  margin-left: 20px;
-  min-width: 85px;
-  color: #84868A;
-  font-size: 15px; 
-}
+    .invoice-meta-card span,
+    .invoice-address-card strong {
+        display: block;
+    }
 
-.receipt-content .invoice-wrapper .line-items .print {
-  margin-top: 50px;
-  text-align: center; 
-}
+    .invoice-meta-card span {
+        font-size: 0.85rem;
+        color: var(--invoice-muted);
+        margin-bottom: 6px;
+    }
 
+    .invoice-meta-card strong,
+    .invoice-address-card strong,
+    .invoice-total-row strong {
+        font-size: 1rem;
+    }
 
+    .invoice-address-card strong {
+        margin: 8px 0 8px;
+    }
 
-.receipt-content .invoice-wrapper .line-items .print a i {
-  margin-right: 3px;
-  font-size: 14px; 
-}
+    .invoice-address-card p {
+        line-height: 1.7;
+        margin: 0;
+    }
 
-.receipt-content .footer {
-  margin-top: 40px;
-  margin-bottom: 110px;
-  text-align: center;
-  font-size: 12px;
-  color: #969CAD; 
-}
+    .invoice-items-section {
+        margin-top: 10px;
+        padding: 20px 0 14px;
+    }
+
+    .invoice-section-head {
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .invoice-section-head h2 {
+        margin: 0;
+        font-size: 1.45rem;
+    }
+
+    .invoice-section-head span {
+        color: var(--invoice-muted);
+        font-weight: 600;
+    }
+
+    .invoice-table-wrap {
+        overflow: hidden;
+        border: 1px solid var(--invoice-line);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .invoice-col-item {
+        width: 40%;
+    }
+
+    .invoice-col-mrp {
+        width: 14%;
+    }
+
+    .invoice-col-discount {
+        width: 16%;
+    }
+
+    .invoice-col-qty {
+        width: 8%;
+    }
+
+    .invoice-col-total {
+        width: 22%;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--invoice-line);
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .invoice-table th {
+        font-size: 0.84rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--invoice-muted);
+        background: rgba(248, 249, 249, 0.92);
+        white-space: nowrap;
+    }
+
+    .invoice-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .invoice-table th:nth-child(n + 2):not(:last-child),
+    .invoice-table td:nth-child(n + 2):not(:last-child) {
+        text-align: center;
+    }
+
+    .invoice-item-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .invoice-item-cell strong {
+        color: var(--invoice-text);
+        font-size: 0.98rem;
+    }
+
+    .invoice-item-cell span {
+        color: var(--invoice-muted);
+        font-size: 0.88rem;
+    }
+
+    .invoice-cell-money {
+        font-weight: 700;
+        color: var(--invoice-text);
+        white-space: nowrap;
+    }
+
+    .invoice-cell-discount {
+        color: #b45309;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .align-right {
+        text-align: right !important;
+    }
+
+    .invoice-note-card {
+        min-height: 188px;
+        align-self: start;
+    }
+
+    .invoice-total-card {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        background: #fff;
+        align-self: start;
+    }
+
+    .invoice-total-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--invoice-line);
+    }
+
+    .invoice-total-heading strong {
+        color: var(--invoice-text);
+        font-size: 1.05rem;
+    }
+
+    .invoice-total-row {
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        color: var(--invoice-muted);
+    }
+
+    .invoice-total-row strong {
+        color: var(--invoice-text);
+    }
+
+    .grand-total {
+        margin-top: 6px;
+        padding-top: 16px;
+        border-top: 1px solid var(--invoice-line);
+        color: var(--invoice-text);
+    }
+
+    .grand-total strong {
+        color: var(--invoice-accent);
+        font-size: 1.18rem;
+    }
+
+    @media (max-width: 767px) {
+        .invoice-card {
+            padding: 24px 20px 26px;
+            border-radius: 24px;
+        }
+
+        .invoice-header,
+        .invoice-address-grid,
+        .invoice-section-head {
+            flex-direction: column;
+        }
+
+        .invoice-header-side {
+            align-items: flex-start;
+        }
+
+        .invoice-doc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .invoice-summary-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            padding: 12px 10px;
+            font-size: 0.92rem;
+        }
+
+        .invoice-table-wrap {
+            overflow-x: auto;
+        }
+
+        .invoice-table {
+            min-width: 760px;
+        }
+    }
+
+    @media print {
+        body {
+            background: #fff;
+        }
+
+        .invoice-page {
+            padding: 0;
+        }
+
+        .invoice-card {
+            width: 100%;
+            margin: 0;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 18px 8px 0;
+        }
+
+        .invoice-table-wrap {
+            overflow: visible;
+            border-radius: 18px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            min-width: 0;
+            table-layout: fixed;
+        }
+
+        .invoice-col-item {
+            width: 38%;
+        }
+
+        .invoice-col-mrp {
+            width: 14%;
+        }
+
+        .invoice-col-discount {
+            width: 16%;
+        }
+
+        .invoice-col-qty {
+            width: 8%;
+        }
+
+        .invoice-col-total {
+            width: 24%;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            padding: 10px 8px;
+            font-size: 10.5px;
+        }
+
+        .invoice-table th {
+            font-size: 9px;
+            letter-spacing: 0.04em;
+        }
+
+        .invoice-item-cell strong {
+            font-size: 11px;
+        }
+
+        .invoice-item-cell span,
+        .invoice-cell-discount,
+        .invoice-cell-money {
+            font-size: 10px;
+        }
+
+        .invoice-summary-shell,
+        .invoice-address-grid,
+        .invoice-meta-grid,
+        .invoice-table-wrap,
+        .invoice-total-card,
+        .invoice-note-card {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+    }
 </style>

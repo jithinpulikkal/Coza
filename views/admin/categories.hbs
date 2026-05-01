@@ -1,25 +1,25 @@
 <div class="head-img d-flex align-items-center justify-content-center">
     <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Categories</h1>
 </div>
-<div class="container mt-5">
+<div class="container mt-5 admin-table-shell">
 {{#if category}}
 <form action="/admin/edit-category/{{category._id}}" method="post">
-       <div class="d-flex">
-         <input type="text" name="category" style="width: 90%;" placeholder="" value="{{category.category}}">
+       <div class="d-flex admin-form-row">
+         <input type="text" class="admin-search-input" name="category" style="width: 90%;" placeholder="" value="{{category.category}}">
          <input style="border: none;" class="dlt-btn bg-primary ms-1 " type="submit" value="Edit Category">
        </div>
        <p class="text-danger text-center">{{err}}</p>
     </form>
 {{else}}
     <form action="/admin/add-category" method="post">
-       <div class="d-flex">
-         <input type="text" name="category" style="width: 90%;" placeholder="Add category" value="{{data.category}}">
+       <div class="d-flex admin-form-row">
+         <input type="text" class="admin-search-input" name="category" style="width: 90%;" placeholder="Add category" value="{{data.category}}">
          <input style="border: none;" class="dlt-btn bg-success ms-1 " type="submit" value="Add Category">
        </div>
        <p class="text-danger text-center">{{err}}</p>
     </form>
     {{/if}}
-    <table class="table table-borderless table-hover text-center">
+    <table class="table table-borderless table-hover text-center polished-table">
   <thead>
    
     <tr>

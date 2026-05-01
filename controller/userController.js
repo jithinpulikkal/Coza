@@ -14,6 +14,30 @@ const walletTransaction = require("../model/walletTransactionModel");
 
 require("dotenv").config();
 
+function saveSession(req) {
+    return new Promise((resolve, reject) => {
+        req.session.save((err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+function destroySession(req) {
+    return new Promise((resolve, reject) => {
+        req.session.destroy((err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 function cartCout(userId) {
     return new Promise(async (resolve, reject) => {
         let cartData = await cart.findOne({ user: ObjectId(userId) });
@@ -157,6 +181,7 @@ module.exports = {
                 req.session.otpData = null;
                 req.session.otpUser = null;
 
+                await saveSession(req);
                 return res.redirect("/");
             } else {
                 req.session.InvalidOtp = "Invalid OTP. Please try again.";
@@ -200,22 +225,22 @@ module.exports = {
                     res.redirect("/login");
                 }
                 else if (userExist.status && userExist.verified) {
-                    bcrypt.compare(userData.password, userExist.password).then((status) => {
-                        if (status) {
-                            req.session.user = userExist;
-                            res.redirect("/");
-                        } else if (userData.password == "") {
-                            response = "Password Field required";
-                            req.session.loginErr = response;
-                            req.session.loginData = req.body;
-                            res.redirect("/login");
-                        } else {
-                            response = "Invalid Password";
-                            req.session.loginErr = response;
-                            req.session.loginData = req.body;
-                            res.redirect("/login");
-                        }
-                    });
+                    const status = await bcrypt.compare(userData.password, userExist.password);
+                    if (status) {
+                        req.session.user = userExist;
+                        await saveSession(req);
+                        return res.redirect("/");
+                    } else if (userData.password == "") {
+                        response = "Password Field required";
+                        req.session.loginErr = response;
+                        req.session.loginData = req.body;
+                        return res.redirect("/login");
+                    } else {
+                        response = "Invalid Password";
+                        req.session.loginErr = response;
+                        req.session.loginData = req.body;
+                        return res.redirect("/login");
+                    }
                 } else {
                     response = "Your account is banned by admin. Please connect with our helpline";
                     req.session.loginErr = response;
@@ -240,9 +265,14 @@ module.exports = {
         }
     },
 
-    userLogout: (req, res) => {
-        req.session.user = null;
-        res.redirect("/login");
+    userLogout: async (req, res, next) => {
+        try {
+            await destroySession(req);
+            res.clearCookie("connect.sid");
+            return res.redirect("/login");
+        } catch (err) {
+            next(err);
+        }
     },
 
     otpLogin: (req, res) => {
@@ -333,6 +363,7 @@ module.exports = {
             req.session.otp = null;
             await user.updateOne({ email: userExist.email }, { $set: { verified: true } });
             await user.updateOne({ email: userExist.email }, { $unset: { key: 1 } });
+            await saveSession(req);
             res.redirect("/");
         } else {
             response = "Invalid OTP ";

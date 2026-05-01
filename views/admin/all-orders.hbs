@@ -1,8 +1,8 @@
 <div class="head-img d-flex align-items-center justify-content-center mb-4">
     <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Orders</h1>
 </div>
-<div class="container d-none d-md-block">
-  <div class="float-end mb-4">
+<div class="container d-none d-md-block admin-table-shell">
+  <div class="float-end mb-4 admin-filter-row">
     <select name="" oninput="orderFilter()" id="order-filter" class="fs-5" style="border: none;">
       <option value="">All</option>
       <option value="userCancelPending" {{#if (eq opt 'userCancelPending')}} selected{{/if}}>Pending Cancel</option>
@@ -17,7 +17,7 @@
       
     </select>
   </div>
-    <table class="table table-hover table-borderless text-center">
+    <table class="table table-hover table-borderless text-center polished-table">
   <thead>
     <tr  style="font-size: larger;">
       <th scope="col">Date</th>
@@ -47,8 +47,8 @@
 </table>
 </div>
 
-<div class="container d-block d-md-none">
-    <table class="table table-hover">
+<div class="container d-block d-md-none admin-table-shell">
+    <table class="table table-hover polished-table">
   <thead>
     <tr>
 

@@ -1,8 +1,8 @@
 <div class="head-img d-flex align-items-center justify-content-center mb-4">
     <h1 class=" text-white " style="text-shadow: 2px 1px 2px rgb(0, 0, 0);">Users</h1>
 </div>
-<div class="container d-none d-md-block">
-    <div class="float-end">
+<div class="container d-none d-md-block admin-table-shell">
+    <div class="float-end admin-filter-row">
       <label for="">Filter : </label><select name="" id="" style="border: none;" oninput="usersFilter(this.value)">
         <option value=" ">All users</option>
         <option value="active" {{#if (eq filter "active")}}selected{{/if}}>Active Users</option>
@@ -10,7 +10,7 @@
         
       </select>
     </div>
- <table class="table table-hover text-center table-borderless">
+ <table class="table table-hover text-center table-borderless polished-table">
   <thead>
     <tr>
       <th scope="col"></th>
@@ -62,7 +62,7 @@
 
 </div>
 
-<div class="container d-block d-md-none">
+<div class="container d-block d-md-none admin-table-shell">
     
 <table class="table table-hover ">
 

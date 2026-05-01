@@ -20,6 +20,64 @@ var instance = new Razorpay({
     key_secret: process.env.KEY_SECRET,
   });
 
+function getItemStatus(item, orderStatus) {
+    if (item?.itemStatus) return item.itemStatus
+    if (orderStatus === 'adminAcceptCancel') return 'adminAcceptCancel'
+    return 'active'
+}
+
+function canCancelItem(orderStatus, itemStatus) {
+    const lockedOrderStatuses = ['Delivered', 'adminAcceptCancel', 'returnPending', 'returnConfirmed']
+    const lockedItemStatuses = ['adminAcceptCancel', 'returnPending', 'returnConfirmed']
+    return !lockedOrderStatuses.includes(orderStatus) && !lockedItemStatuses.includes(itemStatus)
+}
+
+function decorateOrderProducts(order) {
+    if (!order?.products) return order
+    order.products = order.products.map((item, index) => {
+        const itemStatus = getItemStatus(item, order.orderStatus)
+        return {
+            ...item,
+            lineIndex: index,
+            itemStatus,
+            canCancel: canCancelItem(order.orderStatus, itemStatus),
+            isCancelled: itemStatus === 'adminAcceptCancel',
+            isCancelPending: itemStatus === 'userCancelPending'
+        }
+    })
+    return order
+}
+
+function calculateOrderTotals(products, couponDiscount = 0) {
+    const activeProducts = products.filter((item) => getItemStatus(item) !== 'adminAcceptCancel')
+    const allOfferTotal = products.reduce((sum, item) => sum + ((item?.product?.offerPrice || 0) * (item?.quantity || 0)), 0)
+    const activeOfferTotal = activeProducts.reduce((sum, item) => sum + ((item?.product?.offerPrice || 0) * (item?.quantity || 0)), 0)
+    const activeSubTotal = activeProducts.reduce((sum, item) => sum + ((item?.product?.price || 0) * (item?.quantity || 0)), 0)
+    const proportionalCoupon = allOfferTotal > 0 ? Math.round((activeOfferTotal / allOfferTotal) * (couponDiscount || 0)) : 0
+    const activeDiscTotal = Math.max(0, activeOfferTotal - proportionalCoupon)
+
+    return {
+        subTotal: activeSubTotal,
+        discTotal: activeDiscTotal
+    }
+}
+
+async function recordWalletTransaction(userId, transactionType, amount, description) {
+    try {
+      const transaction = {
+        userId: ObjectId(userId),
+        transactionType: transactionType,
+        amount: parseFloat(amount),
+        description: description,
+        timestamp: new Date()
+      };
+  
+      await walletTransactionCollection.insertOne(transaction);
+      console.log('Wallet transaction recorded successfully.');
+    } catch (error) {
+      console.error('Error recording wallet transaction:', error);
+    }
+}
 
 
 function getCartProducts(userId){
@@ -253,7 +311,7 @@ module.exports={
                 let reven=sales*offerPrice
                 productCollection.updateOne({_id:produId},{$set:{rev:reven}})
             }
-            let OrderObj={
+	            let OrderObj={
                 Address:{
                    name:orderData.fname+' '+orderData.lname,
                    address:orderData.address,
@@ -268,7 +326,7 @@ module.exports={
                },
                userId:ObjectId(userId),
                username:username,
-               products:cartProducts,
+	               products:cartProducts.map((item) => ({ ...item, itemStatus: 'active' })),
                subTotal:totalPrice.total,
                discTotal:totalPrice.disTotal,
                coupon:appliedCoupon.name,
@@ -369,7 +427,7 @@ module.exports={
                 userCollection.updateOne({_id:ObjectId(userId)},{$set:{wallet:0}})
             }
             
-            let OrderObj={
+	            let OrderObj={
                 Address:{
                    name:orderData.fname+' '+orderData.lname,
                    address:orderData.address,
@@ -384,7 +442,7 @@ module.exports={
                },
                userId:ObjectId(userId),
                username:username,
-               products:cartProducts,
+	               products:cartProducts.map((item) => ({ ...item, itemStatus: 'active' })),
                subTotal:totalPrice.total,
                discTotal:totalPrice.disTotal,
                coupon:appliedCoupon.name,
@@ -488,6 +546,7 @@ module.exports={
         
         
         let order=await orderCollection.findOne({_id:ObjectId(orderId)})
+        decorateOrderProducts(order)
         let cartCount=await CartCount(req.session.user._id)
             
         res.render('user/singleOrder',{order,user:req.session.user,cartCount})
@@ -501,6 +560,7 @@ module.exports={
         try{
             let id=req.params.id
         let orderData=await orderCollection.findOne({_id:ObjectId(id)})
+        decorateOrderProducts(orderData)
         res.render('user/cancel-order',{orderData})
         }
         catch(err){
@@ -513,24 +573,65 @@ module.exports={
           let orderId = req.params.id;
           let cancelData = req.body;
           let order = await orderCollection.findOne({ _id: ObjectId(orderId) });
-      
-          // Restock products
-          for (let i = 0; i < order.products.length; i++) {
-            let productId = order.products[i].item;
-            let quantity = order.products[i].quantity;
-            await productCollection.updateOne({ _id: ObjectId(productId) }, { $inc: { stock: quantity } });
+
+          const selectedItems = Array.isArray(cancelData.selectedItems)
+            ? cancelData.selectedItems
+            : cancelData.selectedItems
+              ? [cancelData.selectedItems]
+              : [];
+
+          const selectedIndexes = [...new Set(selectedItems.map((value) => parseInt(value, 10)).filter((value) => !Number.isNaN(value)))];
+
+          if (!selectedIndexes.length) {
+            return res.redirect('/cancel-order/' + orderId);
           }
-      
-          // Update order status and cancellation details
-          await orderCollection.updateOne({ _id: ObjectId(orderId) }, {
-            $set: {
-              orderStatus: "userCancelPending",
-              reason: cancelData.reason,
-              feedback: cancelData.feedback
-            }
-          });
-      
-          res.redirect('/orders');
+
+          const products = (order.products || []).map((item) => ({ ...item }));
+          const oldDiscTotal = Number(order.discTotal || 0);
+
+          for (const index of selectedIndexes) {
+            const productItem = products[index];
+            if (!productItem) continue;
+
+            const itemStatus = getItemStatus(productItem, order.orderStatus);
+            if (!canCancelItem(order.orderStatus, itemStatus)) continue;
+
+            await productCollection.updateOne(
+              { _id: ObjectId(productItem.item) },
+              { $inc: { stock: productItem.quantity } }
+            );
+
+            productItem.itemStatus = 'adminAcceptCancel';
+            productItem.cancelReason = cancelData.reason;
+            productItem.cancelFeedback = cancelData.feedback;
+            productItem.cancelledAt = new Date();
+          }
+
+          const totals = calculateOrderTotals(products, Number(order.coupDiscount || 0));
+          const allCancelled = products.every((item) => getItemStatus(item) === 'adminAcceptCancel');
+          const refundAmount = Math.max(0, oldDiscTotal - totals.discTotal);
+
+          const updatePayload = {
+            products,
+            subTotal: totals.subTotal,
+            discTotal: totals.discTotal,
+            reason: cancelData.reason,
+            feedback: cancelData.feedback
+          };
+
+          if (allCancelled) {
+            updatePayload.orderStatus = 'adminAcceptCancel';
+          }
+
+          if (order.paymentStatus === 'Paid' && refundAmount > 0) {
+            await userCollection.updateOne({ _id: ObjectId(order.userId) }, { $inc: { wallet: refundAmount } });
+            await recordWalletTransaction(order.userId, 'credit', refundAmount, 'Refund for cancelled order items');
+            updatePayload.paymentStatus = allCancelled ? 'refunded' : 'Partially Refunded';
+          }
+
+          await orderCollection.updateOne({ _id: ObjectId(orderId) }, { $set: updatePayload });
+
+          res.redirect('/order/' + orderId);
         } catch (err) {
           next(err);
         }
@@ -904,4 +1005,3 @@ module.exports={
       },
      
 }
-

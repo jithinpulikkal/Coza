@@ -59,18 +59,23 @@
                 {{#if user}}
                 <a href="/wishlist" class="nav-icon-pill"><i class="fa-regular fa-heart fs-5 text-dark"></i></a>
                 {{/if}}
-                <div class="nav-user-chip ps-3 pt-3 pe-4 d-flex">
+                {{#if user}}
+                <div class="nav-user-chip user-chip d-flex">
                     <i class="fa fa-user fs-4"></i>
-                    {{#if user}}
-                    <p class="ms-3" onclick="openNav()" style="cursor: pointer;">{{user.username}}</p>
-                    {{else}}
-                    <p class="ms-3" style="cursor: pointer;"><a href="/login" style="text-decoration: none; color: black;">Login</a></p>
-                    {{/if}}
+                    <p class="user-chip-name" onclick="openNav()" style="cursor: pointer;">{{user.username}}</p>
                 </div>
+                {{else}}
+                <a href="/login" class="nav-user-chip nav-login-chip">
+                    <i class="fa fa-user fs-4 nav-login-icon"></i>
+                    <span class="nav-login-link">Login</span>
+                </a>
+                {{/if}}
                 {{#if user}}
                 <div class="nav-icon-pill cart-pill ps-3 pt-3 pe-4 pb-3">
-                    <a href="/cart"><i class="fa-solid fa-cart-shopping fs-4 text-dark"></i></a>
-                    <span class="badge rounded-pill bg-warning text-dark" style="position: relative; bottom: 50%;">{{cartCount}}</span>
+                    <a href="/cart" class="cart-icon-wrap">
+                        <i class="fa-solid fa-cart-shopping fs-4 text-dark"></i>
+                        <span class="cart-notification" data-count="{{cartCount}}" aria-hidden="true">{{cartCount}}</span>
+                    </a>
                 </div>
                 {{/if}}
             </form>
@@ -96,7 +101,10 @@
         {{#if user}}
         <div>
             <div class="head-search-box ps-3 pt-1" style="border-right-style: none;" onclick="window.location.href='/cart'">
-                <i class="fa-solid fa-cart-shopping fs-6"><span class="badge rounded-pill bg-warning text-dark">{{cartCount}}</span></i>
+                <span class="cart-icon-wrap mobile-cart-wrap">
+                    <i class="fa-solid fa-cart-shopping fs-6"></i>
+                    <span class="cart-notification mobile-cart-badge" data-count="{{cartCount}}" aria-hidden="true">{{cartCount}}</span>
+                </span>
             </div>
         </div>
         {{/if}}
