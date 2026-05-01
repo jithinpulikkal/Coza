@@ -1,6 +1,7 @@
 const productCollection=require('../model/productModel')
 const categoryCollection=require('../model/categoryModel')
 const cartCollection=require('../model/cartModel')
+const { ensureDbConnection } = require('../config/connection')
 const mongoose=require('mongoose')
 const reviewCollection=require('../model/reviewModel')
 const {ObjectId}=mongoose.Types
@@ -23,6 +24,7 @@ function CartCount(userId){
 module.exports={
     shop: async(req, res,next) => {
         try{
+        ensureDbConnection()
         let user = req.session.user
         let cartCount = 0
         if (user) {
@@ -177,6 +179,7 @@ module.exports={
 
     viewProduct: async(req,res,next)=>{
         try{
+            ensureDbConnection()
             let user=req.session.user
         let cartCount
         let proId=req.params.id
@@ -226,6 +229,7 @@ module.exports={
 
     singleProduct: async(req,res,next)=>{
         try{
+            ensureDbConnection()
             let user=req.session.user
         let cartCount
         let proId=req.params.id
@@ -337,7 +341,7 @@ module.exports={
         let response={}
         if(productData.product==''){
             response.err="Title field is empty"
-            rreq.session.editProductErr=response.err
+            req.session.editProductErr=response.err
             res.redirect('/admin/edit-product/'+req.params.id)
         }else if(productData.brand==''){
             response.err="Brand filed is empty"
@@ -551,6 +555,7 @@ module.exports={
     productSearch:async(req,res,next)=>{
        
         try{
+            ensureDbConnection()
             let payload=req.body.payload.trim();
         console.log(payload);
         let filter=req.session.filter
@@ -582,7 +587,7 @@ module.exports={
         res.send({payload:search})
         }
         catch(err){
-            next()
+            next(err)
         }
     },
 

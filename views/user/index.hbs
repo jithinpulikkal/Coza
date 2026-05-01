@@ -1,63 +1,101 @@
-
-<br>
-<section class="banner">
-    <div class="banner-data ">
-        <p class="banner-text fs-5 mb-0">COZA</p>
-        <h1 class="banner-title fs-1 mb-4">Collections</h1>
-        <a href="/shop" class="explore-button pt-3 pb-3 ps-4 pe-4 ">Shop Now</a>
+<section class="hero-shell">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="hero-kicker mb-3">Spring / Summer 2026</p>
+            <h1 class="hero-title mb-3">Sharper essentials. Softer statements.</h1>
+            <p class="hero-description mb-4">A cleaner, more elevated take on everyday fashion with standout accessories, premium basics, and effortless silhouettes.</p>
+            <div class="hero-actions">
+                <a href="/shop" class="cta-primary">Shop Collection</a>
+                <a href="/filter/category/Women" class="cta-secondary">Explore Women</a>
+            </div>
+            <div class="hero-metrics mt-5">
+                <div>
+                    <strong>Fresh Drops</strong>
+                    <span>New arrivals every week</span>
+                </div>
+                <div>
+                    <strong>Editor Picks</strong>
+                    <span>Curated staples for daily wear</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card hero-card-main"></div>
+            <div class="hero-card hero-card-accent"></div>
+            <div class="hero-badge">
+                <span>Trend Edit</span>
+                <strong>Up to 65% off</strong>
+            </div>
+        </div>
     </div>
 </section>
-<section class="home-category mt-5"> 
+
+<section class="home-category category-shell">
     <div class="container">
-        <div class="row ">
-            <div class="col-md-4 mb-3 mb-md-0 ">
-                <div class="card cardHover card1 overlay" onclick="window.location.href='/filter/category/Men'">
-                    <h4 style="color: white; position: absolute; top:60% ;left:35%" class="fs-2">Men</h4>
-
+        <div class="section-heading">
+            <p class="section-kicker">Browse by mood</p>
+            <h2 class="section-title">Shop by signature category</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="category-card card1" onclick="window.location.href='/filter/category/Men'">
+                    <div class="category-content">
+                        <span>Tailored / Daily / Street</span>
+                        <h4>Men</h4>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3 mb-md-0 ">
-                <div class="card cardHover card2 overlay"   onclick="window.location.href='/filter/category/Women'">
-                    <h4 style="color: white; position: absolute; top:60% ;left:35%" class="fs-2">Women</h4>
-
+            <div class="col-md-4">
+                <div class="category-card card2" onclick="window.location.href='/filter/category/Women'">
+                    <div class="category-content">
+                        <span>Modern / Effortless / Refined</span>
+                        <h4>Women</h4>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 ">
-                <div class="card cardHover card3 overlay" onclick="window.location.href='/filter/category/Accessories'">
-                    <h4 style="color: rgb(255, 255, 255); position: absolute; top:60% ;left:35%" class="fs-2">Accesories</h4>
-
-
+            <div class="col-md-4">
+                <div class="category-card card3" onclick="window.location.href='/filter/category/Accessories'">
+                    <div class="category-content">
+                        <span>Details that finish the look</span>
+                        <h4>Accessories</h4>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="mt-5 pt-5">
-            <div class="row g-0">
-                <div class="col-12 home-banner-2">
-                    <div class="banner2-content">
-                        <p class="fs-4 text-success">-65%</p>
-                        <p class="fs-1" style="font-weight: bolder;">Global Sale</p>
-                        <a href="/shop" class="btn-globalsale pt-2 pb-2 ps-4 pe-4">Buy Now</a>
-
-                    </div>
-
-                </div>
+        <div class="sale-panel mt-5">
+            <div>
+                <p class="sale-kicker mb-2">Limited-time global sale</p>
+                <h3 class="sale-title mb-2">Upgrade the wardrobe, not the budget.</h3>
+                <p class="sale-copy mb-0">Fresh silhouettes, bold essentials, and versatile layers with a sharper visual refresh.</p>
             </div>
+            <a href="/shop" class="cta-primary">Buy Now</a>
         </div>
     </div>
 </section>
-<section class="pt-5" style="height: auto;">
-    <h3 class="text-center">Latest Products</h3>
-    <div class="container ">
-        
-        <div class="row ">
+
+<section class="product-showcase">
+    <div class="container">
+        <div class="section-heading section-heading-row">
+            <div>
+                <p class="section-kicker">Just landed</p>
+                <h3 class="section-title">Latest products</h3>
+            </div>
+            <a href="/shop" class="section-link">View all products</a>
+        </div>
+        <div class="row g-4">
             {{#each products}}
-            <div class="col-lg-3 col-md-6 col-6 latest">
-                <div class="card" style="width: 18rem;" onclick="window.location.href='/product/{{_id}}'">
-                    <img src="/product-images/{{Images.[0]}}.jpg" class="card-img-top" alt="..." onmouseenter="this.src='/product-images/{{Images.[1]}}.jpg'" onmouseout="this.src='/product-images/{{Images.[0]}}.jpg'">
-                    <div class="card-body">
-                        <p class="text-secondary mb-0" style="font-size: 14px;">{{brand}}</p>
-                        <p class="mb-0">{{product}}</p>
-                        <span style="text-decoration: line-through;" class="text-secondary">{{price}}</span> <span>{{offerPrice}}</span>
+            <div class="col-xl-3 col-md-6 col-12 latest">
+                <div class="product-card-modern" onclick="window.location.href='/product/{{_id}}'">
+                    <div class="product-image-wrap">
+                        <img src="/product-images/{{Images.[0]}}.jpg" class="card-img-top" alt="{{product}}" onmouseenter="this.src='/product-images/{{Images.[1]}}.jpg'" onmouseout="this.src='/product-images/{{Images.[0]}}.jpg'">
+                    </div>
+                    <div class="card-body product-card-body">
+                        <p class="product-brand mb-2">{{brand}}</p>
+                        <p class="product-name mb-2">{{product}}</p>
+                        <div class="product-price-row">
+                            <span class="product-original">{{price}}</span>
+                            <span class="product-price">{{offerPrice}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,35 +104,30 @@
     </div>
 </section>
 
-<section class="footer pb-5" style="background-color: #252525;">
-<div class="container">
-<div class="row">
-    
-    <div class="col-md-8 pt-5 f-list">
-        <img src="/images/logoWhite.png" alt="" width="100px">
-        <a style="text-decoration: none;" href="" class=" pt-3 ps-3">Shop</a>
-        <a style="text-decoration: none;" href="" class=" pt-3 ps-3">About Us</a>
-        <a style="text-decoration: none;" href="" class="pt-3 ps-3">Contact US</a>
-
+<section class="footer modern-footer">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-5">
+                <img src="/images/logoWhite.png" alt="" width="100px">
+                <p class="footer-copy mt-4 mb-0">COZA brings together elevated basics, expressive statement pieces, and a storefront experience designed to feel as polished as the products.</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="footer-links">
+                    <a href="/shop">Shop</a>
+                    <a href="/about-us">About Us</a>
+                    <a href="/contact">Contact Us</a>
+                    <a href="/orders">Order Status</a>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="social-row">
+                    <i class="fa-brands fa-youtube fs-4 icons"></i>
+                    <i class="fa-brands fa-facebook-f icons fs-4"></i>
+                    <i class="fa-brands fa-twitter icons fs-4"></i>
+                    <i class="fa-brands fa-instagram icons fs-4"></i>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 pt-5 mt-3  ">
-        <ul class="f-list ">
-            <li><a href="">Privacy Policy</a></li>
-            <li><a href=""> Order Status</a></li>
-            <li><a href=""> Payment Options</a></li>
-        </ul>
-    </div>
-</div>
-<div class="latest pb-4">
-    <i  class="fa-brands fa-youtube  fs-4 icons"></i>
-<i class="fa-brands fa-facebook-f icons fs-4 ps-2"></i>
-<i class="fa-brands fa-twitter icons fs-4 ps-2"></i>
-<i class="fa-brands fa-instagram icons fs-4 ps-2"></i>
-</div>
-
-</div>
-<p class="text-center text-secondary">Copyright ©2023 All rights reserved By Jithin</p>
-
-
+    <p class="text-center footer-note">Copyright ©2026 All rights reserved by Jithin</p>
 </section>
-

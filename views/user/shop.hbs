@@ -1,8 +1,8 @@
-<div class="container mt-5">
+<div class="container mt-5 shop-shell">
     <div class="row">
         <div class="col-md-3 col-lg-2 d-none d-md-block " style="height: fit-content;">
             
-            <div class="float-start pt-2 border mt-5 mb-5 pt-3 ps-3 pe-5 pb-3 " style="border-radius: 5%; position:fixed">
+            <div class="float-start pt-2 border mt-5 mb-5 pt-3 ps-3 pe-5 pb-3 filter-panel" style="border-radius: 5%; position:fixed">
                 <h4>Filter</h4>
                 {{#if option}}
                 <div class=" d-flex justify-content-start align-items-center">
@@ -67,7 +67,7 @@
 
         <div class="col-md-9 col-lg-10 ">
 
-            <div class="row">
+            <div class="row shop-grid-shell">
 
                 <div class="col-md-12 mb-2">
                     <span class="float-end">Sort by : <select oninput="sort()" name="" id="sortOption" style="border: 1px solid black;"
@@ -81,7 +81,7 @@
                 {{#each products}}
                 <div class="col-lg-3 col-6  latest">
 
-                    <div class="card" style="width: 13rem;">
+                    <div class="card product-card-modern shop-card" style="width: 13rem;">
                         <a href="/product/{{_id}}">
                             <img id="img1" src="/product-images/{{Images.[0]}}.jpg" class="card-img-top" alt="..."
                                 onmouseover="this.src='/product-images/{{Images.[1]}}.jpg'"

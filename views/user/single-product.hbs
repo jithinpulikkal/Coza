@@ -1,16 +1,16 @@
 <br>
-<div class="container mt-4 ">
+<div class="container mt-4 product-detail-shell">
     <div class="row">
         <div class="col-md-4 ">
-            <img id="main-img" src="/product-images/{{product.Images.[0]}}.jpg" alt="" class="shadow" width="100%">
-            <div class="d-flex mt-2">
+            <img id="main-img" src="/product-images/{{product.Images.[0]}}.jpg" alt="" class="shadow product-main-image" width="100%">
+            <div class="d-flex mt-2 gallery-strip">
                 {{#each product.Images}}
-                <img id="{{[]}}" src="/product-images/{{[]}}.jpg" alt="" width="70px" class="ms-2 mt-1  border"
+                <img id="{{[]}}" src="/product-images/{{[]}}.jpg" alt="" width="70px" class="ms-2 mt-1 border product-thumb"
                     onclick="imgClick(this.id)">
                 {{/each}}
             </div>
         </div>
-        <div class="col-md-6  mt-4">
+        <div class="col-md-6 mt-4 product-summary-card">
             <h2>{{product.product}}</h2>
             <h4 class="text-secondary">{{product.brand}}</h4>
             <br>
@@ -88,7 +88,7 @@
         <div class="col-md-6 mb-3 ">
             {{#if review}}
             {{#each review}}
-            <div class="shadow py-1 px-3 mb-2" style="border-radius: 20px;">
+            <div class="shadow py-1 px-3 mb-2 review-card-modern" style="border-radius: 20px;">
                 <h5 class=" "><span {{#if (gt review.rating 4)}} class="badge rounded-pill bg-success" {{else}} {{#if (gt review.rating 2)}} class="badge rounded-pill bg-warning" {{else}} class="badge rounded-pill bg-danger" {{/if}}{{/if}}>{{review.rating}}<i class="fa-regular fa-star ms-1"></i></span>{{review.username}}</h5>
                 <h5 class="ps-5">{{review.title}}</h5>
                 <p class="ps-5">{{review.description}}</p>

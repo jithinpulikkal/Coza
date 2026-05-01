@@ -260,8 +260,8 @@
         </svg>
       </div>
       <div class="col-md-6 align-self-center">
-        {{#if (eq status 404)}}
-        <h1>{{status}}  {{error.message}}</h1>
+        {{#if status}}
+        <h1>{{status}} {{message}}</h1>
         {{else}}
         <h1>Somthing Went Wrong</h1>
         {{/if}}
@@ -272,6 +272,8 @@
           How you got here is a mystery. But you can click the button below
           to go back to the homepage.
         </p>
+        {{else if message}}
+        <p>{{message}}</p>
         {{/if}}
         <a href="/" class="btn btn-warning">HOME</a>
       </div>

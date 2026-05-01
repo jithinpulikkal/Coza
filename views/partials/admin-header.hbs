@@ -1,25 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-info nav-border">
-    <div class="container-fluid ms-5">
+<nav class="navbar navbar-expand-lg admin-navbar">
+    <div class="container-fluid nav-shell admin-shell">
         <img src="/images/icons/logo-white.png" alt="" width="100px" onclick="window.location.href='/admin'">
         <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa-solid fa-bars text-dark"></i>
+            <i class="fa-solid fa-bars text-white"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav nav-links admin-links me-auto mb-2 mb-lg-0">
                 <li class="nav-item ms-md-4 ">
-                    <a class="nav-link active text-dark fs-6" aria-current="page" href="/admin/categories">Categories</a>
+                    <a class="nav-link active fs-6" aria-current="page" href="/admin/categories">Categories</a>
                 </li>
                 
                 <li class="nav-item ms-md-2">
-                    <a class="nav-link active text-dark fs-6" href="/admin/products">Products</a>
+                    <a class="nav-link active fs-6" href="/admin/products">Products</a>
                 </li>
                 
                 <li class="nav-item ms-md-2">
-                    <a class="nav-link active text-dark fs-6" href="/admin/user-list">Users</a>
+                    <a class="nav-link active fs-6" href="/admin/user-list">Users</a>
                 </li>
                 <li class="nav-item ms-md-2">
-                    <a class="nav-link active text-dark fs-6" href="/admin/all-orders">Orders </a>
+                    <a class="nav-link active fs-6" href="/admin/all-orders">Orders </a>
                 </li>
                 <li class="nav-item dropdown">
                     {{!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -45,7 +45,7 @@
             <form class="d-none d-lg-flex">
               
                
-                <div class="nav-search-box ps-3 pt-3 pe-4 d-flex">
+                <div class="nav-user-chip admin-chip ps-3 pt-3 pe-4 d-flex">
                     <i class="fa fa-user fs-4"></i>
                 
                     <p class="ms-3" style="cursor: pointer;"> </p>
@@ -60,7 +60,7 @@
             </form>
         </div>
     </div>
-    <div class="d-lg-none d-flex " style="width: 100%;">
+    <div class="d-lg-none d-flex mobile-head" style="width: 100%;">
     
         <div onclick="openNav()" class="head-search-box ps-1 pt-1 pe-4 d-flex  ">
     
@@ -71,9 +71,9 @@
 </nav>
 <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <div class="nav-search-box ps-3 pt-3 pe-4 d-flex mb-4">
+        <div class="side-profile ps-3 pt-3 pe-4 d-flex mb-4">
             {{!-- <i class="fa-regular fa-user fs-4"></i> --}}
-            <img src="/images/admin.png" alt="" style="border-radius: 5px;">
+            <img src="/images/admin.png" alt="" style="border-radius: 12px;">
             
             <p class="ms-3 fs-4" onclick="" style="cursor: pointer;"> {{admin.username}}</p>
            

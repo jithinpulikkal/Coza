@@ -344,8 +344,10 @@ module.exports = {
     homePage: async (req, res, next) => {
         try {
             let userExist = req.session.user;
-            let products = await productCollection.find({ status: true }).sort({ _id: -1 }).limit(4).toArray();
-            console.log(products);
+            let products = [];
+            if (mongoose.connection.readyState === 1) {
+                products = await productCollection.find({ status: true }).sort({ _id: -1 }).limit(4).toArray();
+            }
             let cartCount = 0;
             if (userExist) {
                 cartCount = await cartCout(req.session.user._id);
